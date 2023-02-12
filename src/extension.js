@@ -16,7 +16,23 @@ function startExtension(gmail) {
             var compose_ref = gmail.dom.composes()[0];
             gmail.tools.add_compose_button(compose, 'Générer une réponse', function() {
                 const existing_body = compose.body()
-                compose.body(htmlToText(compose.dom('quoted_reply')[0].value) + existing_body);
+                //Api call to send the response
+                fetch('https://quinn-ai-stage.herokuapp.com/api/email/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        "source": htmlToText(compose.dom('quoted_reply')[0].value) + existing_body,
+                    })
+                })
+                .then(response => {           
+                    return response.json();
+                })
+                .then(data => { 
+                    console.log(data)    
+                    compose.body(data.body);
+                })
             }, 'Custom Style Classes');
             })
     });
