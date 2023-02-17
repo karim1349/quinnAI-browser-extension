@@ -17,7 +17,7 @@ function startExtension(gmail) {
             gmail.tools.add_compose_button(compose, 'Générer une réponse', function() {
                 const existing_body = compose.body()
                 //Api call to send the response
-                fetch('https://quinn-ai-stage.herokuapp.com/api/email/', {
+                fetch('https://quinn-stage.herokuapp.com/api/email/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
