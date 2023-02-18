@@ -34,6 +34,7 @@ function startExtension(gmail) {
                 .then(data => { 
                     button[0].textContent = "Générer une réponse" 
                     compose.body(textToHtml(data.body));
+                    console.log(compose)
                 })
             }, 'Custom Style Classes');
             })
@@ -48,5 +49,6 @@ function htmlToText(html) {
 function textToHtml(text) {
     const div = document.createElement("div");
     div.innerText = text;
+    div.innerHTML = div.innerHTML.replace(/&lt;br&gt;/g, "").replace(/&lt;br\/&gt;/g, "");
     return div.innerHTML;
   }
