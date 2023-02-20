@@ -14,8 +14,8 @@ function startExtension(gmail) {
         const userEmail = gmail.get.user_email();
         gmail.observe.on("compose", (compose) => {
             var compose_ref = gmail.dom.composes()[0];
-            const button = gmail.tools.add_compose_button(compose, "Générer une réponse", function() {
-                button[0].textContent = "Chargement ..." 
+            const generateButton = gmail.tools.add_compose_button(compose, "Générer une réponse", function() {
+                generateButton[0].textContent = "Chargement ..." 
                 const existing_body = compose.body()
                 //Api call to send the response
                 fetch('https://quinn-stage.herokuapp.com/api/email/', {
@@ -33,6 +33,28 @@ function startExtension(gmail) {
                 })
                 .then(data => { 
                     button[0].textContent = "Générer une réponse" 
+                    compose.body(textToHtml(data.body));
+                    console.log(compose)
+                })
+            }, 'Custom Style Classes');
+            const orthographeButton = gmail.tools.add_compose_button(compose, "Corriger l'orthographe", function() {
+                orthographeButton[0].textContent = "Chargement ..." 
+                const body = compose.body()
+                //Api call to send the response
+                fetch('https://quinn-stage.herokuapp.com/api/orthographe/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        "source": body
+                    })
+                })
+                .then(response => {           
+                    return response.json();
+                })
+                .then(data => { 
+                    orthographeButton[0].textContent = "Corriger l'orthographe" 
                     compose.body(textToHtml(data.body));
                     console.log(compose)
                 })
