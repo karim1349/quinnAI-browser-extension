@@ -32,7 +32,7 @@ function startExtension(gmail) {
                     return response.json();
                 })
                 .then(data => { 
-                    button[0].textContent = "Générer une réponse" 
+                    generateButton[0].textContent = "Générer une réponse" 
                     compose.body(textToHtml(data.body));
                     console.log(compose)
                 })
