@@ -1,6 +1,6 @@
 "use strict";
 
-const api_url = "https://d7e2-2a01-e0a-2a6-ab70-1580-eebd-f678-73b9.eu.ngrok.io/";
+const api_url = "https://ad76-2001-861-5386-4590-a8a2-934f-8f36-ced8.eu.ngrok.io/";
 const loaderId = setInterval(() => {
     if (!window._gmailjs) {
         return;
@@ -24,7 +24,7 @@ function startExtension(gmail) {
                 orthographeButton[0].textContent = "Chargement ..." 
                 const body = compose.body()
                 //Api call to send the response
-                fetch(api_url + 'api/headlines/', {
+                fetch(api_url + 'api/emails/orthographe/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ function startExtension(gmail) {
                 console.log(data)
                 var headlines = data.body.split("|");
                 headlines.forEach(headline => {
-                    addHeadlineButton(container, headline);
+                    addHeadlineButton(container, headline, compose);
                 }
                 )
             })
@@ -110,12 +110,28 @@ function addStyle() {
     document.head.appendChild(style);
 }
 
-function addHeadlineButton(container, text) {
+function addHeadlineButton(container, text, compose) {
     var div = document.createElement('a');
     div.innerText = text;
     div.className = 'headline';
     div.addEventListener('click', function() {
-    alert('Button clicked!');
+        fetch(api_url + 'api/emails/responses/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "source": compose.body(),
+                "sender": compose.from(),
+                "headline": text
+                })
+        })
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            compose.body(textToHtml(data.body));
+        })
     });
     container.appendChild(div);
     console.log(container)
