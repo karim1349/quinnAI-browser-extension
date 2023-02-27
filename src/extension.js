@@ -1,6 +1,6 @@
 "use strict";
 
-const api_url = "https://ad76-2001-861-5386-4590-a8a2-934f-8f36-ced8.eu.ngrok.io/";
+const api_url = "https://quinn-development.herokuapp.com/";
 const loaderId = setInterval(() => {
     if (!window._gmailjs) {
         return;
@@ -42,14 +42,15 @@ function startExtension(gmail) {
                 })
             }, 'Custom Style Classes');
 
-            await fetch(api_url + 'api/emails/headlines/', {
+            await fetch(api_url + 'api/emails/generate_headlines/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     "source": htmlToText(compose.dom('quoted_reply')[0].value),
-                    "user": userEmail
+                    "user": userEmail,
+                    "label_id": 0
                 })
             })
             .then(response => {
@@ -115,7 +116,7 @@ function addHeadlineButton(container, text, compose) {
     div.innerText = text;
     div.className = 'headline';
     div.addEventListener('click', function() {
-        fetch(api_url + 'api/emails/responses/', {
+        fetch(api_url + 'api/emails/generate_responses/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -123,7 +124,8 @@ function addHeadlineButton(container, text, compose) {
             body: JSON.stringify({
                 "source": compose.body(),
                 "sender": compose.from(),
-                "headline": text
+                "headline": text,
+                "label_id": 0
                 })
         })
         .then(response => {
