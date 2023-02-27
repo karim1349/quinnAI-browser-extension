@@ -74,6 +74,7 @@ function addHeadlineButton(container, text, compose) {
     div.innerText = text;
     div.className = 'headline';
     div.addEventListener('click', function() {
+        div.innerText = "Chargement ..."
         fetch(API_URL + 'api/emails/generate_responses/', {
             method: 'POST',
             headers: {
@@ -90,6 +91,7 @@ function addHeadlineButton(container, text, compose) {
             return response.json();
         })
         .then(data => {
+            div.innerText = text
             compose.body(textToHtml(data.body));
         })
     });
