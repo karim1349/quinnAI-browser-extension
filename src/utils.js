@@ -19,13 +19,14 @@ function textToHtml(text) {
           flex-direction: row;
           justify-content: center;
           align-items: center;
-          padding: 8px 24px;
+          padding: 8px;
           gap: 8px;
           border-radius: 15px;
           visibility:visible; 
           background:white;
           border: 1px solid #1DA1F2;
           margin-right: 8px;
+          display:flex;
       }
   
       .headline:hover {
