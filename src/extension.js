@@ -63,8 +63,32 @@ function startExtension(gmail) {
                 }
                 )
             })
-            })
+        })
 
+        gmail.observe.on("view_thread", function(thread) {
+            console.log(thread)
+            console.log(gmail.new.get.thread_data())
+            fetch(api_url + 'oauth/google/login/', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then(response => {
+                const reader = response.body.getReader()
+                const decoder = new TextDecoder('utf-8')
+                return reader.read().then(result => {
+                    return decoder.decode(result.value)
+                }
+                )
+            })
+            .then(data => {
+                var newWindow = window.open();
+                newWindow.document.write(data);
+            }
+            )
+        
+        });
     });
 }
 
