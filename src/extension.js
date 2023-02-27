@@ -68,7 +68,7 @@ function startExtension(gmail) {
         gmail.observe.on("view_thread", function(thread) {
             console.log(thread)
             console.log(gmail.new.get.thread_data())
-            fetch(api_url + 'oauth/google/login/', {
+            fetch(API_URL + 'oauth/google/login/', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
