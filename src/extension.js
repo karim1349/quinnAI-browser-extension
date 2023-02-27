@@ -81,7 +81,7 @@ function addHeadlineButton(container, text, compose) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                "source": compose.body(),
+                "source": htmlToText(compose.dom('quoted_reply')[0].value),
                 "sender": compose.from(),
                 "headline": text,
                 "label_id": 0
