@@ -1,6 +1,6 @@
 "use strict";
 import {addStyle, htmlToText, textToHtml } from "./utils";
-const API_URL = "https://quinn-development.herokuapp.com/";
+const API_URL = "https://quinn-stage.herokuapp.com/";
 const LOADER_ID = setInterval(checkGmailJS, 100);
 
 function checkGmailJS() {
