@@ -1,5 +1,8 @@
 "use strict";
 import {addStyle, htmlToText, textToHtml } from "./utils";
+import React from "react";
+import { createRoot } from "react-dom/client";
+import ComposeMenu from "./ComposeMenu";
 const API_URL = "https://quinn-development.herokuapp.com/";
 const LOADER_ID = setInterval(checkGmailJS, 100);
 
@@ -14,6 +17,11 @@ function startExtension(gmail) {
     gmail.observe.on("load", () => {
         gmail.observe.on("compose", async (compose) => {
             addStyle();
+            const button = document.createElement("td");
+            button.innerText = "TEST"
+            document.getElementsByClassName("btC")[0].appendChild(button);
+            const root = createRoot(button);
+            root.render(<ComposeMenu />);
             const compose_ref = gmail.dom.composes()[0];
             var container = document.createElement('div');
             container.className = 'container';
@@ -40,7 +48,7 @@ function startExtension(gmail) {
                     compose.body(textToHtml(data.body));
                 })
             }, 'Custom Style Classes');
-
+            
             await fetch(API_URL + 'api/emails/generate_headlines/', {
                 method: 'POST',
                 headers: {
