@@ -13,42 +13,28 @@ function checkGmailJS() {
 }
 function startExtension(gmail) {
     window.gmail = gmail;
+    var linkToTailwind = document.createElement('link');
+    linkToTailwind.rel = 'stylesheet';
+    linkToTailwind.href = 'https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.2/tailwind.min.css';
+    document.head.appendChild(linkToTailwind);
+    var linkToFlowbite = document.createElement('link');
+    linkToFlowbite.rel = 'stylesheet';
+    linkToFlowbite.href = 'https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.css';
+    var scriptFlowbite = document.createElement('script');
+    scriptFlowbite.src = 'https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.js';
+    document.head.insertBefore(linkToFlowbite, document.head.childNodes[0]);
     const userEmail = gmail.get.user_email();
     gmail.observe.on("load", () => {
         gmail.observe.on("compose", async (compose) => {
             addStyle();
             const button = document.createElement("td");
-            button.innerText = "TEST"
-            document.getElementsByClassName("btC")[0].appendChild(button);
+            document.getElementsByClassName("btC")[0].insertBefore(button, document.getElementsByClassName("btC")[0].childNodes[1]);
             const root = createRoot(button);
-            root.render(<ComposeMenu />);
+            root.render(<ComposeMenu compose={compose} />);
             const compose_ref = gmail.dom.composes()[0];
             var container = document.createElement('div');
             container.className = 'container';
             await compose.$el[0].appendChild(container);
-            const orthographeButton = gmail.tools.add_compose_button(compose, "Corriger l'orthographe", function() {
-                orthographeButton[0].textContent = "Chargement ..." 
-                const body = compose.body()
-                //Api call to send the response
-                fetch(API_URL + 'api/emails/orthographe/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        "source": body,
-                        "label_id": 0
-                    })
-                })
-                .then(response => {
-                    return response.json();
-                })
-                .then(data => { 
-                    orthographeButton[0].textContent = "Corriger l'orthographe" 
-                    compose.body(textToHtml(data.body));
-                })
-            }, 'Custom Style Classes');
-            
             await fetch(API_URL + 'api/emails/generate_headlines/', {
                 method: 'POST',
                 headers: {
