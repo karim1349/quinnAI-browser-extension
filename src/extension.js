@@ -1,5 +1,8 @@
 "use strict";
 import {addStyle, htmlToText, textToHtml } from "./utils";
+import React from "react";
+import { createRoot } from "react-dom/client";
+import ComposeMenu from "./ComposeMenu";
 const API_URL = "https://quinn-development.herokuapp.com/";
 const LOADER_ID = setInterval(checkGmailJS, 100);
 
@@ -10,37 +13,28 @@ function checkGmailJS() {
 }
 function startExtension(gmail) {
     window.gmail = gmail;
+    var linkToTailwind = document.createElement('link');
+    linkToTailwind.rel = 'stylesheet';
+    linkToTailwind.href = 'https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.2/tailwind.min.css';
+    document.head.appendChild(linkToTailwind);
+    var linkToFlowbite = document.createElement('link');
+    linkToFlowbite.rel = 'stylesheet';
+    linkToFlowbite.href = 'https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.css';
+    var scriptFlowbite = document.createElement('script');
+    scriptFlowbite.src = 'https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.js';
+    document.head.insertBefore(linkToFlowbite, document.head.childNodes[0]);
     const userEmail = gmail.get.user_email();
     gmail.observe.on("load", () => {
         gmail.observe.on("compose", async (compose) => {
             addStyle();
+            const button = document.createElement("td");
+            document.getElementsByClassName("btC")[0].insertBefore(button, document.getElementsByClassName("btC")[0].childNodes[1]);
+            const root = createRoot(button);
+            root.render(<ComposeMenu compose={compose} />);
             const compose_ref = gmail.dom.composes()[0];
             var container = document.createElement('div');
             container.className = 'container';
             await compose.$el[0].appendChild(container);
-            const orthographeButton = gmail.tools.add_compose_button(compose, "Corriger l'orthographe", function() {
-                orthographeButton[0].textContent = "Chargement ..." 
-                const body = compose.body()
-                //Api call to send the response
-                fetch(API_URL + 'api/emails/orthographe/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        "source": body,
-                        "label_id": 0
-                    })
-                })
-                .then(response => {
-                    return response.json();
-                })
-                .then(data => { 
-                    orthographeButton[0].textContent = "Corriger l'orthographe" 
-                    compose.body(textToHtml(data.body));
-                })
-            }, 'Custom Style Classes');
-
             await fetch(API_URL + 'api/emails/generate_headlines/', {
                 method: 'POST',
                 headers: {
@@ -57,10 +51,10 @@ function startExtension(gmail) {
             })
             .then(data => {
                 var headlines = data.body.split("|");
-                headlines.forEach(headline => {
-                    addHeadlineButton(container, headline, compose);
+                
+                for(var i = 0; i < 4; i++) {
+                    addHeadlineButton(container, headlines[i], compose);
                 }
-                )
             })
             })
 
@@ -76,7 +70,8 @@ function addHeadlineButton(container, text, compose) {
     svgElement.setAttribute("height", "14");
     svgElement.setAttribute("viewBox", "0 0 32 14");
     svgElement.setAttribute("fill", "none");
-    svgElement.style.width = "25px";
+    svgElement.style.minWidth = "25px";
+    svgElement.style.maxWidth = "25px";
 
     // Create a path element and set its "d" attribute
     const pathElement = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -86,10 +81,15 @@ function addHeadlineButton(container, text, compose) {
     // Add the path element to the SVG element
     svgElement.appendChild(pathElement);
     container.appendChild(div);
-    div.innerText = " " + text;
+    div.innerHTML = " " + text;
+    div.insertBefore(svgElement, div.firstChild);
     div.className = 'headline';
     div.addEventListener('click', function() {
-        div.innerText = "Chargement ..."
+        div.innerHTML = `
+        <div class="spinner-container">
+          <div class="spinner"></div>
+          <div class="checkmark"></div>
+        </div>`
         fetch(API_URL + 'api/emails/generate_responses/', {
             method: 'POST',
             headers: {
@@ -106,9 +106,9 @@ function addHeadlineButton(container, text, compose) {
             return response.json();
         })
         .then(data => {
-            div.innerText = text
+            div.innerHTML = text
+            div.insertBefore(svgElement, div.firstChild);
             compose.body(textToHtml(data.body));
         })
     });
-    div.insertBefore(svgElement, div.firstChild);
 }
