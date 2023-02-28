@@ -51,10 +51,10 @@ function startExtension(gmail) {
             })
             .then(data => {
                 var headlines = data.body.split("|");
-                headlines.forEach(headline => {
-                    addHeadlineButton(container, headline, compose);
+                
+                for(var i = 0; i < 4; i++) {
+                    addHeadlineButton(container, headlines[i], compose);
                 }
-                )
             })
             })
 
@@ -70,7 +70,8 @@ function addHeadlineButton(container, text, compose) {
     svgElement.setAttribute("height", "14");
     svgElement.setAttribute("viewBox", "0 0 32 14");
     svgElement.setAttribute("fill", "none");
-    svgElement.style.width = "25px";
+    svgElement.style.minWidth = "25px";
+    svgElement.style.maxWidth = "25px";
 
     // Create a path element and set its "d" attribute
     const pathElement = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -80,10 +81,15 @@ function addHeadlineButton(container, text, compose) {
     // Add the path element to the SVG element
     svgElement.appendChild(pathElement);
     container.appendChild(div);
-    div.innerText = " " + text;
+    div.innerHTML = " " + text;
+    div.insertBefore(svgElement, div.firstChild);
     div.className = 'headline';
     div.addEventListener('click', function() {
-        div.innerText = "Chargement ..."
+        div.innerHTML = `
+        <div class="spinner-container">
+          <div class="spinner"></div>
+          <div class="checkmark"></div>
+        </div>`
         fetch(API_URL + 'api/emails/generate_responses/', {
             method: 'POST',
             headers: {
@@ -100,9 +106,9 @@ function addHeadlineButton(container, text, compose) {
             return response.json();
         })
         .then(data => {
-            div.innerText = text
+            div.innerHTML = text
+            div.insertBefore(svgElement, div.firstChild);
             compose.body(textToHtml(data.body));
         })
     });
-    div.insertBefore(svgElement, div.firstChild);
 }
