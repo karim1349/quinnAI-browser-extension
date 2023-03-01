@@ -25,8 +25,8 @@ function startExtension(gmail) {
     document.head.insertBefore(linkToFlowbite, document.head.childNodes[0]);
     const userEmail = gmail.get.user_email();
     gmail.observe.on("load", () => {
+        addStyle();
         gmail.observe.on("compose", async (compose) => {
-            addStyle();
             const button = document.createElement("td");
             document.getElementsByClassName("btC")[0].insertBefore(button, document.getElementsByClassName("btC")[0].childNodes[1]);
             const root = createRoot(button);
@@ -57,7 +57,25 @@ function startExtension(gmail) {
                 }
             })
             })
-
+        const emailList = document.getElementsByClassName("F cf zt")[0].childNodes[1];
+        const scoreElement = document.createElement("td");
+        scoreElement.className = "score xY";
+        scoreElement.innerText = "80";
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if(mutation.addedNodes.length > 1) {
+                    const email = mutation.target;
+                    console.log(mutation)
+                    const labelEmail = email.getElementsByClassName("a4W")[0];
+                    email.insertBefore(scoreElement.cloneNode(true), labelEmail);
+                }
+            });
+        });
+        for(let email of emailList.childNodes) {
+            const labelEmail = email.getElementsByClassName("a4W")[0];
+            email.insertBefore(scoreElement.cloneNode(true), labelEmail);
+            observer.observe(email, {childList: true});
+        }
     });
 }
 

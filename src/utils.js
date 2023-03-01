@@ -61,6 +61,17 @@ function textToHtml(text) {
       @keyframes spin {
         to { transform: rotate(360deg); }
       }
+      .score {
+        background-color:#87CEEB;
+        border-radius: 10px;
+        width:45px;
+        height:20px;
+        font-size: 13px;
+        justify-content: center;
+        line-height: 15px !important;
+        margin-right: 10px;
+        color:#E4E5E9;
+      }
       `;
       document.head.appendChild(style);
   }
