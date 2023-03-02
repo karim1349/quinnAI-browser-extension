@@ -1,9 +1,11 @@
 import React from "react";
+import PopUpResume from "./PopUpResume";
 import { textToHtml } from "./utils";
 function ComposeMenu(compose) {
   const gmail = window.gmail;
   const API_URL = "https://quinn-development.herokuapp.com/";
   const [label, setLabel ] = React.useState(0);
+  const [popUp, setPopUp ] = React.useState(0);
 
   const setProfessionalMode = () => {
     setLabel("Mode professionnel");
@@ -31,6 +33,10 @@ function ComposeMenu(compose) {
         setLabel("Corriger l'orthographe")
         compose.compose.body(textToHtml(data.body));
     })
+  }
+  const resumeConversation = () => {
+    setLabel("Résumer la conversation");
+    setPopUp(1);
   }
   return (
     <div>
@@ -62,11 +68,32 @@ function ComposeMenu(compose) {
               <a onClick={() => correctOrthograph()} class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Corriger l'orthographe</a>
             </li>
             <li>
-              <a onClick={() => setLabel("Résumer la conversation")} class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Résumer la conversation</a>
+              <a onClick={() => resumeConversation()} class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Résumer la conversation</a>
+            </li>
+            <li>
+              <a onClick={() => setLabel("Traduire")} class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Traduire</a>
+            </li>
+            <li>
+              <a onClick={() => setLabel("Identifier les actions à prendre")} class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Identifier les actions à prendre</a>
+            </li>
+            <li>
+              <a onClick={() => setLabel("Améliorer l'écriture")} class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Améliorer l'écriture</a>
+            </li>
+            <li>
+              <a onClick={() => setLabel("Raccourcir")} class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Raccourcir</a>
+            </li>
+            <li>
+              <a onClick={() => setLabel("Allonger")} class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Allonger</a>
+            </li>
+            <li>
+              <a onClick={() => setLabel("Changer le ton")} class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Changer le ton</a>
+            </li>
+            <li>
+              <a onClick={() => setLabel("Simplifier le langage")} class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Simplifier le langage</a>
             </li>
           </ul>
       </div>
-
+      {popUp ? <PopUpResume setPopUp={setPopUp} label={label} /> : null}
     </div>
     
   );

@@ -61,6 +61,24 @@ function textToHtml(text) {
       @keyframes spin {
         to { transform: rotate(360deg); }
       }
+
+      .buttonConfirm {
+        background: linear-gradient(45deg, #3CDDF3 0%, #1DA1F2 48.69%, #1DA1F2 48.7%, #4FCEF3 100%);
+      }
+
+      .buttonConfirm:hover {
+        background: none;
+        background-color:#0B3F75;
+      }
+      .inputArea {
+        background: rgba(236, 246, 253, 0.64);
+        border-radius: 20px;
+      }
+
+      .inputArea::-webkit-scrollbar {
+        background-color: transparent;
+        display: none;
+      }
       `;
       document.head.appendChild(style);
   }
