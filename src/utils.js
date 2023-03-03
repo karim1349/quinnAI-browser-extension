@@ -28,8 +28,6 @@ function textToHtml(text) {
           margin-right: 8px;
           display:flex;
           cursor: pointer;
-          flex: 1;
-          flex-basis: 0;
       }
   
       .headline:hover {
@@ -79,6 +77,17 @@ function textToHtml(text) {
         background-color: transparent;
         display: none;
       }
+
+      .scrollableDropdown::-webkit-scrollbar {
+        background-color: transparent;
+        width:8px;
+      }
+
+      .scrollableDropdown::-webkit-scrollbar-thumb {
+        background-color: grey;
+        border-radius: 10px;
+      }
+
       `;
       document.head.appendChild(style);
   }

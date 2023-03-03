@@ -6,13 +6,13 @@ function PopUpResume(props) {
         const dropdown = document.getElementById("dropdown2");
         if (dropdown.classList.contains("hidden")) {
       
-          document.getElementById("svgInset").classList.remove("rotate-0");
-          document.getElementById("svgInset").classList.add("rotate-180");
+          document.getElementById("svgInset2").classList.remove("rotate-0");
+          document.getElementById("svgInset2").classList.add("rotate-180");
           dropdown.classList.remove("hidden");
         } else {
       
-          document.getElementById("svgInset").classList.remove("rotate-180");
-          document.getElementById("svgInset").classList.add("rotate-0");
+          document.getElementById("svgInset2").classList.remove("rotate-180");
+          document.getElementById("svgInset2").classList.add("rotate-0");
           dropdown.classList.add("hidden");
         }
     }
@@ -21,8 +21,8 @@ function PopUpResume(props) {
         const dropdown = document.getElementById("dropdown2");
         if(dropdown === null) return;
         if (event.target.closest("#multiLevelDropdownButton2")) return;
-        document.getElementById("svgInset").classList.remove("rotate-180");
-        document.getElementById("svgInset").classList.add("rotate-0");
+        document.getElementById("svgInset2").classList.remove("rotate-180");
+        document.getElementById("svgInset2").classList.add("rotate-0");
         dropdown.classList.add("hidden");
     });
     return (
@@ -76,7 +76,7 @@ function PopUpResume(props) {
                                 }
                             </span>
                             </div>
-                            <svg class="w-4 h-4 ml-2 rotate-0 transition-transform duration-300 ease-in-out" id="svgInset" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            <svg class="w-4 h-4 ml-2 rotate-0 transition-transform duration-300 ease-in-out" id="svgInset2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </button>
 
                         <div id="dropdown2" class="z-10 hidden bg-white mx-2.5 my-2 rounded-lg shadow w-48 absolute">
