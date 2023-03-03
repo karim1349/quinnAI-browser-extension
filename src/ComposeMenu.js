@@ -58,7 +58,7 @@ function ComposeMenu(compose) {
         </div>
         <svg class="w-4 h-4 ml-2 rotate-0 transition-transform duration-300 ease-in-out" id="svgInset" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
       </button>
-      <div id="dropdown" class="z-10 hidden bg-white mx-2.5 my-2 h-32 rounded-lg shadow w-56 absolute overflow-y-scroll scrollableDropdown">
+      <div id="dropdown" class="z-10 hidden bg-white mx-2.5 my-2 h-40 rounded-lg shadow w-56 absolute overflow-y-scroll scrollableDropdown">
           <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="multiLevelDropdownButton">
             <li>
               <a onClick={() => redact()} class="block py-2 flex hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
