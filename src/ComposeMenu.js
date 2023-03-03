@@ -6,6 +6,44 @@ function ComposeMenu(compose) {
   const API_URL = "https://quinn-development.herokuapp.com/";
   const [label, setLabel ] = React.useState(0);
   const [popUp, setPopUp ] = React.useState(0);
+  const [secondDropdown, setSecondDropdown ] = React.useState(0);
+
+  const openDropdown = () => {
+    const dropdown = document.getElementById("dropdown");
+    if (dropdown.classList.contains("hidden")) {
+  
+      document.getElementById("svgInset").classList.remove("rotate-0");
+      document.getElementById("svgInset").classList.add("rotate-180");
+      dropdown.classList.remove("hidden");
+    } else {
+  
+      document.getElementById("svgInset").classList.remove("rotate-180");
+      document.getElementById("svgInset").classList.add("rotate-0");
+      dropdown.classList.add("hidden");
+      if(document.getElementById("doubleDropdown").classList.contains("hidden") == false){
+        document.getElementById("doubleDropdown").classList.add("hidden");
+      }
+    }
+  }
+
+  const openSecondDropdown = (id, event) => {
+    const oldId = secondDropdown;
+    setSecondDropdown(id);
+    let parentElement = event.target.parentElement;
+    while(parentElement.tagName != "LI"){
+      parentElement = parentElement.parentElement;
+    }
+    const secondDropdownElement = document.getElementById("doubleDropdown");
+    const firstDropdownWidth = document.getElementById("dropdown").offsetWidth;
+    secondDropdownElement.style.top = parentElement.getBoundingClientRect().top + "px";
+    secondDropdownElement.style.left = parentElement.getBoundingClientRect().left + firstDropdownWidth + 10 + "px";
+
+    if(document.getElementById("doubleDropdown").classList.contains("hidden") == true){
+      document.getElementById("doubleDropdown").classList.remove("hidden");
+    } else if (oldId == id){
+      document.getElementById("doubleDropdown").classList.add("hidden");
+    }
+  }
 
   const redact = () => {
     setLabel("Rédiger");
@@ -35,8 +73,8 @@ function ComposeMenu(compose) {
     })
   }
   const resumeConversation = () => {
-    setLabel("Résumer la conversation");
-    setPopUp(1);
+    //setLabel("Résumer la conversation");
+    //setPopUp(1);
   }
   return (
     <div>
@@ -62,19 +100,18 @@ function ComposeMenu(compose) {
           <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="multiLevelDropdownButton">
             <li>
               <a onClick={() => redact()} class="block py-2 flex hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-              <svg class="self-center mx-2" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M7.34813 1.14832L7.40817 1.18298C7.92692 1.48246 8.35949 1.73218 8.67623 1.97661C9.01055 2.23461 9.2759 2.53074 9.38705 2.94553C9.49819 3.36032 9.41645 3.74945 9.25592 4.14004C9.10383 4.51009 8.85407 4.94265 8.55456 5.46137L5.97088 9.93651C5.77292 10.28 5.61639 10.5517 5.37816 10.7564C5.13992 10.9611 4.84782 11.0749 4.4784 11.2189L4.37857 11.2579C3.69309 11.5257 3.12806 11.7465 2.66535 11.8546C2.18143 11.9676 1.71418 11.9817 1.27867 11.7303C0.843154 11.4788 0.621717 11.0671 0.477669 10.5915C0.339937 10.1367 0.248616 9.53703 0.137826 8.80946L0.121654 8.70353C0.0616348 8.31161 0.0141766 8.00172 0.0723331 7.69305C0.0796028 7.65447 0.0884164 7.61647 0.0986622 7.57884C0.170383 7.31542 0.312279 7.07011 0.485988 6.76981L3.06973 2.29471C3.36921 1.77596 3.61893 1.34339 3.86336 1.02665C4.12136 0.692327 4.41749 0.426975 4.83228 0.315833C5.24707 0.20469 5.6362 0.286427 6.02679 0.446961C6.39684 0.599052 6.8294 0.848806 7.34813 1.14832ZM3.66843 3.25774L7.4212 5.42441L5.13891 9.37745C4.89027 9.80811 4.81918 9.91823 4.72645 9.9979C4.63373 10.0776 4.51416 10.1313 4.05098 10.3122C3.32 10.5978 2.82216 10.791 2.43784 10.8808C2.06659 10.9675 1.89813 10.9332 1.77867 10.8642C1.6592 10.7953 1.54525 10.6665 1.43474 10.3017C1.32034 9.92393 1.23872 9.39619 1.12056 8.62035C1.04568 8.12874 1.03241 7.99835 1.05504 7.87821C1.07768 7.75807 1.13749 7.64144 1.38613 7.21079L3.66843 3.25774ZM8.33099 3.7599C8.24264 3.97485 8.10753 4.22761 7.92016 4.55778L4.16947 2.39232C4.36173 2.06497 4.51306 1.82158 4.65504 1.63759C4.84468 1.39184 4.97242 1.31356 5.0911 1.28176C5.20977 1.24996 5.35954 1.25389 5.64665 1.37189C5.94718 1.4954 6.32158 1.71034 6.87815 2.03168C7.43472 2.35301 7.80806 2.56979 8.06529 2.76829C8.31104 2.95793 8.38932 3.08567 8.42112 3.20435C8.45292 3.32302 8.44899 3.47279 8.33099 3.7599Z" fill="#151522"/>
-                <path d="M6.43945 11.5005C6.43945 11.2244 6.66331 11.0005 6.93945 11.0005H10.9395C11.2156 11.0005 11.4395 11.2244 11.4395 11.5005C11.4395 11.7767 11.2156 12.0005 10.9395 12.0005H6.93945C6.66331 12.0005 6.43945 11.7767 6.43945 11.5005Z" fill="#151522"/>
-              </svg>
-
-
+                <svg class="self-center mx-2" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M7.34813 1.14832L7.40817 1.18298C7.92692 1.48246 8.35949 1.73218 8.67623 1.97661C9.01055 2.23461 9.2759 2.53074 9.38705 2.94553C9.49819 3.36032 9.41645 3.74945 9.25592 4.14004C9.10383 4.51009 8.85407 4.94265 8.55456 5.46137L5.97088 9.93651C5.77292 10.28 5.61639 10.5517 5.37816 10.7564C5.13992 10.9611 4.84782 11.0749 4.4784 11.2189L4.37857 11.2579C3.69309 11.5257 3.12806 11.7465 2.66535 11.8546C2.18143 11.9676 1.71418 11.9817 1.27867 11.7303C0.843154 11.4788 0.621717 11.0671 0.477669 10.5915C0.339937 10.1367 0.248616 9.53703 0.137826 8.80946L0.121654 8.70353C0.0616348 8.31161 0.0141766 8.00172 0.0723331 7.69305C0.0796028 7.65447 0.0884164 7.61647 0.0986622 7.57884C0.170383 7.31542 0.312279 7.07011 0.485988 6.76981L3.06973 2.29471C3.36921 1.77596 3.61893 1.34339 3.86336 1.02665C4.12136 0.692327 4.41749 0.426975 4.83228 0.315833C5.24707 0.20469 5.6362 0.286427 6.02679 0.446961C6.39684 0.599052 6.8294 0.848806 7.34813 1.14832ZM3.66843 3.25774L7.4212 5.42441L5.13891 9.37745C4.89027 9.80811 4.81918 9.91823 4.72645 9.9979C4.63373 10.0776 4.51416 10.1313 4.05098 10.3122C3.32 10.5978 2.82216 10.791 2.43784 10.8808C2.06659 10.9675 1.89813 10.9332 1.77867 10.8642C1.6592 10.7953 1.54525 10.6665 1.43474 10.3017C1.32034 9.92393 1.23872 9.39619 1.12056 8.62035C1.04568 8.12874 1.03241 7.99835 1.05504 7.87821C1.07768 7.75807 1.13749 7.64144 1.38613 7.21079L3.66843 3.25774ZM8.33099 3.7599C8.24264 3.97485 8.10753 4.22761 7.92016 4.55778L4.16947 2.39232C4.36173 2.06497 4.51306 1.82158 4.65504 1.63759C4.84468 1.39184 4.97242 1.31356 5.0911 1.28176C5.20977 1.24996 5.35954 1.25389 5.64665 1.37189C5.94718 1.4954 6.32158 1.71034 6.87815 2.03168C7.43472 2.35301 7.80806 2.56979 8.06529 2.76829C8.31104 2.95793 8.38932 3.08567 8.42112 3.20435C8.45292 3.32302 8.44899 3.47279 8.33099 3.7599Z" fill="#151522"/>
+                  <path d="M6.43945 11.5005C6.43945 11.2244 6.66331 11.0005 6.93945 11.0005H10.9395C11.2156 11.0005 11.4395 11.2244 11.4395 11.5005C11.4395 11.7767 11.2156 12.0005 10.9395 12.0005H6.93945C6.66331 12.0005 6.43945 11.7767 6.43945 11.5005Z" fill="#151522"/>
+                </svg>
                 <span>
                 Rédiger
                 </span>
               </a>
             </li>
             <li>
-              <a onClick={() => resumeConversation()} class="block py-2 flex hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+              <a id="multiLevelDropdownButton" onClick={() => openSecondDropdown(1, event)} class="block py-2 flex hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white justify-between pr-2">
+              <div class="inline-flex">
                 <svg class="self-center mx-2" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M4.33333 3.83333C4.05719 3.83333 3.83333 4.05719 3.83333 4.33333C3.83333 4.60948 4.05719 4.83333 4.33333 4.83333H6.33333C6.60948 4.83333 6.83333 4.60948 6.83333 4.33333C6.83333 4.05719 6.60948 3.83333 6.33333 3.83333H4.33333Z" fill="#151522"/>
                   <path d="M4.33333 6.5C4.05719 6.5 3.83333 6.72386 3.83333 7C3.83333 7.27614 4.05719 7.5 4.33333 7.5H9.66667C9.94281 7.5 10.1667 7.27614 10.1667 7C10.1667 6.72386 9.94281 6.5 9.66667 6.5H4.33333Z" fill="#151522"/>
@@ -84,17 +121,26 @@ function ComposeMenu(compose) {
                 <span>
                   Résumer la conversation 
                 </span>
+                </div>
+                <svg class="self-center" width="6" height="12" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1.52796 0.467309C1.23376 0.175726 0.758893 0.177844 0.467309 0.472041C0.175726 0.766238 0.177844 1.24111 0.472041 1.53269L2.23501 3.28C2.9505 3.98914 3.44131 4.47718 3.77341 4.89071C4.096 5.2924 4.20668 5.55042 4.23613 5.7815C4.25462 5.92659 4.25462 6.07341 4.23613 6.2185C4.20668 6.44958 4.096 6.7076 3.77341 7.10929C3.44131 7.52282 2.9505 8.01086 2.23501 8.72L0.472041 10.4673C0.177844 10.7589 0.175726 11.2338 0.467309 11.528C0.758893 11.8222 1.23376 11.8243 1.52796 11.5327L3.32269 9.7539C3.99866 9.08396 4.55114 8.53641 4.94294 8.04854C5.35037 7.54122 5.64531 7.02628 5.72409 6.40816C5.75864 6.13714 5.75864 5.86286 5.72409 5.59184C5.64531 4.97372 5.35037 4.45878 4.94294 3.95146C4.55114 3.46359 3.99866 2.91604 3.32269 2.24609L1.52796 0.467309Z" fill="#151522"/>
+                </svg>
+
               </a>
             </li>
             <li>
-              <a onClick={() => setLabel("Traduire")} class="block flex py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+              <a id="multiLevelDropdownButton" onClick={() => openSecondDropdown(2, event)} class="block py-2 flex hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white justify-between pr-2 cursor-pointer">
+              <div class="inline-flex">
               <svg class="self-center mx-2" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M7.99967 0.833008C7.49188 0.833008 6.9959 0.885898 6.51712 0.986644C4.17125 1.48026 2.24958 3.11961 1.36253 5.29141C1.02099 6.12762 0.833008 7.04232 0.833008 7.99967C0.833008 8.50747 0.885898 9.00345 0.986644 9.48223C1.56924 12.251 3.74837 14.4301 6.51712 15.0127C6.9959 15.1134 7.49188 15.1663 7.99967 15.1663C8.50747 15.1663 9.00345 15.1134 9.48224 15.0127C12.251 14.4301 14.4301 12.251 15.0127 9.48223C15.1134 9.00345 15.1663 8.50747 15.1663 7.99967C15.1663 7.04307 14.9786 6.12905 14.6376 5.29337C13.7509 3.12059 11.8288 1.48041 9.48223 0.986644C9.00345 0.885899 8.50747 0.833008 7.99967 0.833008ZM6.02431 5.98191C6.29288 4.34034 6.7735 2.67406 7.00746 1.91233C7.33022 1.86016 7.66161 1.83301 7.99967 1.83301C8.33774 1.83301 8.66913 1.86016 8.99189 1.91233C9.22585 2.67406 9.70647 4.34034 9.97503 5.98191C9.27801 6.09443 8.59712 6.16634 7.99967 6.16634C7.40223 6.16634 6.72134 6.09443 6.02431 5.98191ZM10.9586 5.80022C10.7363 4.45028 10.3803 3.09768 10.1234 2.20833C11.578 2.74196 12.7766 3.80862 13.4814 5.17192C12.8238 5.36122 11.9183 5.60252 10.9586 5.80022ZM11.0953 6.79296C12.1674 6.5748 13.1738 6.30314 13.8686 6.10087C14.0618 6.69853 14.1663 7.3365 14.1663 7.99967C14.1663 8.33774 14.1392 8.66914 14.087 8.99189C13.4826 9.17756 12.3054 9.51951 11.0221 9.78705C11.1101 9.17255 11.1663 8.56128 11.1663 7.99967C11.1663 7.61476 11.14 7.20747 11.0953 6.79296ZM10.843 10.843C11.9678 10.6255 13.0429 10.3395 13.791 10.1234C13.1685 11.8205 11.8205 13.1685 10.1234 13.791C10.3395 13.0429 10.6255 11.9678 10.843 10.843ZM9.78706 11.0221C9.51951 12.3054 9.17756 13.4825 8.99189 14.087C8.66914 14.1392 8.33774 14.1663 7.99967 14.1663C7.66161 14.1663 7.33021 14.1392 7.00746 14.087C6.82179 13.4825 6.47984 12.3054 6.21229 11.0221C6.8268 11.1101 7.43807 11.1663 7.99967 11.1663C8.56128 11.1663 9.17255 11.1101 9.78706 11.0221ZM5.15631 10.843C5.37387 11.9678 5.65988 13.0429 5.87598 13.791C4.17883 13.1685 2.8309 11.8205 2.20831 10.1234C2.95648 10.3395 4.03157 10.6255 5.15631 10.843ZM4.97724 9.78705C3.69395 9.51951 2.5168 9.17756 1.91233 8.99189C1.86016 8.66913 1.83301 8.33774 1.83301 7.99967C1.83301 7.3365 1.93752 6.69853 2.13073 6.10087C2.82553 6.30314 3.83198 6.5748 4.90403 6.79296C4.85939 7.20747 4.83301 7.61476 4.83301 7.99967C4.83301 8.56128 4.88921 9.17255 4.97724 9.78705ZM5.04078 5.80022C4.08104 5.60252 3.17559 5.36122 2.518 5.17192C3.22278 3.80862 4.42132 2.74196 5.87596 2.20833C5.61908 3.09768 5.26306 4.45028 5.04078 5.80022ZM5.83301 7.99967C5.83301 7.67914 5.85373 7.33361 5.8906 6.97326C6.61244 7.08888 7.34045 7.16634 7.99967 7.16634C8.6589 7.16634 9.38691 7.08888 10.1088 6.97326C10.1456 7.33361 10.1663 7.67914 10.1663 7.99967C10.1663 8.59843 10.0941 9.2814 9.98096 9.98095C9.2814 10.0941 8.59843 10.1663 7.99967 10.1663C7.40092 10.1663 6.71794 10.0941 6.01839 9.98095C5.90525 9.2814 5.83301 8.59843 5.83301 7.99967Z" fill="#151522"/>
               </svg>
-
               <span>
                 Traduire
-              </span>
+              </span>                
+              </div>
+                <svg class="self-center" width="6" height="12" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1.52796 0.467309C1.23376 0.175726 0.758893 0.177844 0.467309 0.472041C0.175726 0.766238 0.177844 1.24111 0.472041 1.53269L2.23501 3.28C2.9505 3.98914 3.44131 4.47718 3.77341 4.89071C4.096 5.2924 4.20668 5.55042 4.23613 5.7815C4.25462 5.92659 4.25462 6.07341 4.23613 6.2185C4.20668 6.44958 4.096 6.7076 3.77341 7.10929C3.44131 7.52282 2.9505 8.01086 2.23501 8.72L0.472041 10.4673C0.177844 10.7589 0.175726 11.2338 0.467309 11.528C0.758893 11.8222 1.23376 11.8243 1.52796 11.5327L3.32269 9.7539C3.99866 9.08396 4.55114 8.53641 4.94294 8.04854C5.35037 7.54122 5.64531 7.02628 5.72409 6.40816C5.75864 6.13714 5.75864 5.86286 5.72409 5.59184C5.64531 4.97372 5.35037 4.45878 4.94294 3.95146C4.55114 3.46359 3.99866 2.91604 3.32269 2.24609L1.52796 0.467309Z" fill="#151522"/>
+                </svg>
               </a>
             </li>
             <li>
@@ -109,7 +155,8 @@ function ComposeMenu(compose) {
               </span>
               </a></li>
             <li>
-              <a onClick={() => setLabel("Améliorer")} class="block flex py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+              <a id="multiLevelDropdownButton" onClick={() => openSecondDropdown(3, event)} class="block py-2 flex hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white justify-between pr-2">
+              <div class="inline-flex">
                 <svg class="self-center mx-2" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g clip-path="url(#clip0_464_5549)">
                   <path d="M8.50033 0.666992C8.50033 0.39085 8.27647 0.166992 8.00033 0.166992C7.72418 0.166992 7.50033 0.39085 7.50033 0.666992V2.00033C7.50033 2.27647 7.72418 2.50033 8.00033 2.50033C8.27647 2.50033 8.50033 2.27647 8.50033 2.00033V0.666992Z" fill="#151522"/>
@@ -129,12 +176,18 @@ function ComposeMenu(compose) {
                   </defs>
                 </svg>
 
-              <span>Améliorer
-                </span>
+              <span>
+                Améliorer
+              </span>
+              </div>
+                <svg class="self-center" width="6" height="12" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1.52796 0.467309C1.23376 0.175726 0.758893 0.177844 0.467309 0.472041C0.175726 0.766238 0.177844 1.24111 0.472041 1.53269L2.23501 3.28C2.9505 3.98914 3.44131 4.47718 3.77341 4.89071C4.096 5.2924 4.20668 5.55042 4.23613 5.7815C4.25462 5.92659 4.25462 6.07341 4.23613 6.2185C4.20668 6.44958 4.096 6.7076 3.77341 7.10929C3.44131 7.52282 2.9505 8.01086 2.23501 8.72L0.472041 10.4673C0.177844 10.7589 0.175726 11.2338 0.467309 11.528C0.758893 11.8222 1.23376 11.8243 1.52796 11.5327L3.32269 9.7539C3.99866 9.08396 4.55114 8.53641 4.94294 8.04854C5.35037 7.54122 5.64531 7.02628 5.72409 6.40816C5.75864 6.13714 5.75864 5.86286 5.72409 5.59184C5.64531 4.97372 5.35037 4.45878 4.94294 3.95146C4.55114 3.46359 3.99866 2.91604 3.32269 2.24609L1.52796 0.467309Z" fill="#151522"/>
+                </svg>
               </a>
             </li>
             <li>
-              <a onClick={() => setLabel("Changer le ton")} class="block flex py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+              <a id="multiLevelDropdownButton" onClick={() => openSecondDropdown(4, event)} class="block py-2 flex hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white justify-between pr-2">
+              <div class="inline-flex">
               <svg class="self-center mx-2" width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M7.50027 5.33361C7.50027 5.05747 7.27641 4.83361 7.00027 4.83361C6.72413 4.83361 6.50027 5.05747 6.50027 5.33361V10.6669C6.50027 10.9431 6.72413 11.1669 7.00027 11.1669C7.27641 11.1669 7.50027 10.9431 7.50027 10.6669V5.33361Z" fill="#151522"/>
                 <path d="M5.50027 6.00028C5.50027 5.72414 5.27641 5.50028 5.00027 5.50028C4.72413 5.50028 4.50027 5.72414 4.50027 6.00028L4.50027 10.0003C4.50027 10.2764 4.72413 10.5003 5.00027 10.5003C5.27641 10.5003 5.50027 10.2764 5.50027 10.0003L5.50027 6.00028Z" fill="#151522"/>
@@ -145,7 +198,11 @@ function ComposeMenu(compose) {
               </svg>
               <span>
                 Changer le ton
-              </span>
+              </span>         
+              </div>
+                <svg class="self-center" width="6" height="12" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1.52796 0.467309C1.23376 0.175726 0.758893 0.177844 0.467309 0.472041C0.175726 0.766238 0.177844 1.24111 0.472041 1.53269L2.23501 3.28C2.9505 3.98914 3.44131 4.47718 3.77341 4.89071C4.096 5.2924 4.20668 5.55042 4.23613 5.7815C4.25462 5.92659 4.25462 6.07341 4.23613 6.2185C4.20668 6.44958 4.096 6.7076 3.77341 7.10929C3.44131 7.52282 2.9505 8.01086 2.23501 8.72L0.472041 10.4673C0.177844 10.7589 0.175726 11.2338 0.467309 11.528C0.758893 11.8222 1.23376 11.8243 1.52796 11.5327L3.32269 9.7539C3.99866 9.08396 4.55114 8.53641 4.94294 8.04854C5.35037 7.54122 5.64531 7.02628 5.72409 6.40816C5.75864 6.13714 5.75864 5.86286 5.72409 5.59184C5.64531 4.97372 5.35037 4.45878 4.94294 3.95146C4.55114 3.46359 3.99866 2.91604 3.32269 2.24609L1.52796 0.467309Z" fill="#151522"/>
+                </svg>
               </a>
             </li>
             <li>
@@ -161,6 +218,80 @@ function ComposeMenu(compose) {
             </li>
           </ul>
       </div>
+
+      <div id="doubleDropdown" class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 fixed hidden">
+        {
+          secondDropdown == 1 ?
+            
+              <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
+              <li>
+                <a class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">Bullet points</a>
+              </li>
+              <li>
+                <a class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">Court résumé</a>
+              </li>
+              <li>
+                <a class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">Long résumé</a>
+              </li>
+            </ul>
+          : secondDropdown == 2 ? (
+        
+          <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
+            <li>
+              <a class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">Anglais</a>
+            </li>
+            <li>
+              <a class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">Français</a>
+            </li>
+            <li>
+              <a class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">Allemand</a>
+            </li>
+            <li>
+              <a class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">Espagnol</a>
+            </li>
+            <li>
+              <a class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">Portugais</a>
+            </li>
+            <li>
+              <a class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">Néérlandais</a>
+            </li>
+          </ul>
+        ) : secondDropdown == 3 ? (
+        
+          <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
+            <li>
+              <a class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">Améliorer l'écriture</a>
+            </li>
+            <li>
+              <a class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">Raccourcir</a>
+            </li>
+            <li>
+              <a class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">Allonger</a>
+            </li>
+            <li>
+              <a class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">Simplifier</a>
+            </li>
+          </ul>
+        ) : secondDropdown == 4 ? (
+        
+          <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownButton">
+            <li>
+              <a onClick={() => {setPopUp(4); setLabel("Améliorer")}} class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">Professionnel</a>
+            </li>
+            <li>
+              <a class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">Casuel</a>
+            </li>
+            <li>
+              <a class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">Direct</a>
+            </li>
+            <li>
+              <a class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">Amical</a>
+            </li>
+          </ul>
+        ) : null
+      }
+
+      </div>
       {popUp ? <PopUpResume setPopUp={setPopUp} label={label} /> : null}
     </div>
     
@@ -173,20 +304,9 @@ document.addEventListener("click", function (event) {
   document.getElementById("svgInset").classList.remove("rotate-180");
   document.getElementById("svgInset").classList.add("rotate-0");
   dropdown.classList.add("hidden");
-});
-function openDropdown() {
-  const dropdown = document.getElementById("dropdown");
-  if (dropdown.classList.contains("hidden")) {
-
-    document.getElementById("svgInset").classList.remove("rotate-0");
-    document.getElementById("svgInset").classList.add("rotate-180");
-    dropdown.classList.remove("hidden");
-  } else {
-
-    document.getElementById("svgInset").classList.remove("rotate-180");
-    document.getElementById("svgInset").classList.add("rotate-0");
-    dropdown.classList.add("hidden");
+  if(document.getElementById("doubleDropdown").classList.contains("hidden") == false){
+    document.getElementById("doubleDropdown").classList.add("hidden");
   }
-}
+});
 
 export default ComposeMenu;
