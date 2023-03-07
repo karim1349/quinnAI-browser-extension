@@ -1,12 +1,9 @@
 import React from "react";
 import PopUpActions from "./PopUpActions";
 import PopUpResume from "./PopUpResume";
-import { textToHtml } from "./utils";
 import actions from "./constants";
+
 function ComposeMenu(compose) {
-  const gmail = window.gmail;
-  const API_URL = "https://quinn-development.herokuapp.com/";
-  const [label, setLabel ] = React.useState(0);
   const [action, setAction ] = React.useState(0);
   const [secondDropdown, setSecondDropdown ] = React.useState(0);
 
@@ -48,14 +45,20 @@ function ComposeMenu(compose) {
   }
 
   const executeAction = async (action) => {
-    console.log(action)
-    setLabel("LOADING")
     setAction(action)
-    const body = await compose.compose.body();
-    const response = await action.function(body);
-    console.log(response)
-    setLabel(action.label);
   }
+  //Event listener on click somewhere else close dropdown
+  document.addEventListener("click", function (event) {
+    const dropdown = document.getElementById("dropdown");
+    if(!dropdown) return;
+    if (event.target.closest("#multiLevelDropdownButton")) return;
+    document.getElementById("svgInset").classList.remove("rotate-180");
+    document.getElementById("svgInset").classList.add("rotate-0");
+    dropdown.classList.add("hidden");
+    if(document.getElementById("doubleDropdown").classList.contains("hidden") == false){
+      document.getElementById("doubleDropdown").classList.add("hidden");
+    }
+  });
   return (
     <div>
       <button id="multiLevelDropdownButton" onClick={() => openDropdown()} data-dropdown-toggle="dropdown" class="shadow rounded-lg px-4 py-2.5 mx-2.5 w-56 text-center inline-flex items-center justify-between focus:outline-none" type="button">
@@ -65,12 +68,12 @@ function ComposeMenu(compose) {
           </svg>
           <span class="text-neutral-700 px-2 font-light text-sm whitespace-nowrap overflow-hidden w-32" style={{textOverflow:'ellipsis'}}>
             {
-              label == 0 ? "Quinn AI" : label == "LOADING" ? 
+              !action.label ? "Quinn AI" : action.label == "LOADING" ? 
               <div class="spinner-container">
                 <div class="spinner"></div>
               </div>
               :
-              label
+              action.label
             }
           </span>
         </div>
@@ -133,7 +136,7 @@ function ComposeMenu(compose) {
         action.popUpType == 0 ?
           null
         : action.popUpType == 1 ? 
-          <PopUpResume setAction={setAction} /> 
+          <PopUpResume setAction={setAction} action={action} compose={compose}/> 
         : action.popUpType == 2 ?
           <PopUpActions setAction={setAction} action={action} compose={compose}/> 
         : null
@@ -142,17 +145,5 @@ function ComposeMenu(compose) {
     
   );
 }
-//Event listener on click somewhere else close dropdown
-document.addEventListener("click", function (event) {
-  const dropdown = document.getElementById("dropdown");
-  if(!dropdown) return;
-  if (event.target.closest("#multiLevelDropdownButton")) return;
-  document.getElementById("svgInset").classList.remove("rotate-180");
-  document.getElementById("svgInset").classList.add("rotate-0");
-  dropdown.classList.add("hidden");
-  if(document.getElementById("doubleDropdown").classList.contains("hidden") == false){
-    document.getElementById("doubleDropdown").classList.add("hidden");
-  }
-});
 
 export default ComposeMenu;

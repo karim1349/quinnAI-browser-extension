@@ -8,7 +8,10 @@ const actions = [
         label: 'Rédiger',
         icon: <RedactIcon/>,
         popUpType: 1,
-        function: null
+        function: function() {
+            console.log("Redact");
+            return Promise.resolve(1);
+        }
     },
     {
         id: '2',
@@ -22,20 +25,30 @@ const actions = [
                 label: 'Bullet Points',
                 function: function() {
                     console.log("Bullet points");
+                    return Promise.resolve(1);
                 }
             },
             {
                 name: 'SHORT_SUMMARY',
                 label: 'Court résumé',
-                function: null
+                function: function() {
+                    console.log("Short summary");
+                    return Promise.resolve(1);
+                }
             },
             {
                 name: 'LONG_SUMMARY',
                 label: 'Long résumé',
-                function: null
+                function: function() {
+                    console.log("Long summary");
+                    return Promise.resolve(1);
+                }
             }
         ],
-        function: null
+        function: function() {
+            console.log("Summarize");
+            return Promise.resolve(1);
+        }
     },
     {
         id: '3',
@@ -47,35 +60,56 @@ const actions = [
             {
                 name: 'ENGLISH',
                 label: 'Anglais',
-                function: null
+                function: function() {
+                    console.log("English");
+                    return Promise.resolve(1);
+                }
             },
             {
                 name: 'FRENCH',
                 label: 'Français',
-                function: null
+                function: function() {
+                    console.log("French");
+                    return Promise.resolve(1);
+                }
             },
             {
                 name: 'SPANISH',
                 label: 'Espagnol',
-                function: null
+                function: function() {
+                    console.log("Spanish");
+                    return Promise.resolve(1);
+                }
             },
             {
                 name: 'GERMAN',
                 label: 'Allemand',
-                function: null
+                function: function() {
+                    console.log("German");
+                    return Promise.resolve(1);
+                }
             },
             {
                 name: 'PORTUGUESE',
                 label: 'Portugais',
-                function: null
+                function: function() {
+                    console.log("Portuguese");
+                    return Promise.resolve(1);
+                }
             },
             {
                 name: 'DUTCH',
                 label: 'Néerlandais',
-                function: null
+                function: function() {
+                    console.log("Dutch");
+                    return Promise.resolve(1);
+                }
             }
         ],
-        function: null
+        function: function() {
+            console.log("Translate");
+            return Promise.resolve(1);
+        }
     },
     {
         id: '4',
@@ -95,25 +129,40 @@ const actions = [
             {
                 name: 'MELIORATE_WRITING',
                 label: 'Améliorer l\'écriture',
-                function: null
+                function: function() {
+                    console.log("Meliorate writing");
+                    return Promise.resolve(1);
+                }
             },
             {
                 name: 'SHORTEN',
                 label: 'Raccourcir',
-                function: null
+                function: function() {
+                    console.log("Shorten");
+                    return Promise.resolve(1);
+                }
             },
             {
                 name: 'LENGTHEN',
                 label: 'Allonger',
-                function: null
+                function: function() {
+                    console.log("Lengthen");
+                    return Promise.resolve(1);
+                }
             },
             {
                 name: 'SIMPLIFY',
                 label: 'Simplifier',
-                function: null
+                function: function() {
+                    console.log("Simplify");
+                    return Promise.resolve(1);
+                }
             }
         ],
-        function: null
+        function: function() {
+            console.log("Meliorate");
+            return Promise.resolve(1);
+        }
     },
     {
         id: '6',
@@ -125,25 +174,40 @@ const actions = [
             {
                 name: 'PROFESSIONAL',
                 label: 'Professionnel',
-                function: null
+                function: function() {
+                    console.log("Professional");
+                    return Promise.resolve(1);
+                }
             },
             {
                 name: 'CASUAL',
                 label: 'Casuel',
-                function: null
+                function: function() {                  
+                    console.log("Casual");
+                    return Promise.resolve(1);
+                }
             },
             {
                 name: 'DIRECT',
                 label: 'Direct',
-                function: null
+                function: function() {
+                    console.log("Direct");
+                    return Promise.resolve(1);
+                }
             },
             {
                 name: 'FRIENDLY',
                 label: 'Amical',
-                function: null
+                function: function() {
+                    console.log("Friendly");
+                    return Promise.resolve(1);
+                }
             }
         ],
-        function: null
+        function: function() {
+            console.log("Change tone");
+            return Promise.resolve(1);
+        }
     },
     {
         id: '7',
@@ -151,7 +215,10 @@ const actions = [
         label: 'Identifier les actions à prendre',
         icon: <IdentifyActionsIcon/>,
         popUpType: 1,
-        function: null
+        function: function() {
+            console.log("Identify actions");
+            return Promise.resolve(1);
+        }
     }
 ]
 
