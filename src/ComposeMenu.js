@@ -63,7 +63,7 @@ function ComposeMenu(compose) {
   });
   return (
     <div>
-      <button id="multiLevelDropdownButton" onClick={() => openDropdown()} data-dropdown-toggle="dropdown" class="shadow rounded-lg px-4 py-2.5 mx-2.5 w-56 text-center inline-flex items-center justify-between focus:outline-none" type="button">
+      <button id="multiLevelDropdownButton" onClick={() => openDropdown()} data-dropdown-toggle="dropdown" class="shadow rounded-lg px-4 py-2.5 mx-2.5 w-56 text-center inline-flex items-center justify-between focus:outline-none bg-white" type="button">
         <div class="flex items-center">
           <svg width="32" height="15" viewBox="0 0 32 15" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12.7119 2.36695V5.28869L0 6.25681H16.2714L12.7119 6.83652V8.15053L2.77762 8.90705H19.05L12.7119 9.7399V11.8993L3.40526 12.6075H19.6776L12.7119 13.3457C12.7119 14.0752 13.3029 14.6674 14.0308 14.6674H30.6811C31.409 14.6674 32 14.0752 32 13.3457V2.36695L22.3559 9.06164L12.7119 2.36695ZM32 0.754395H12.7119L22.3559 7.44908L32 0.754395Z" fill="#00ADEF"/>

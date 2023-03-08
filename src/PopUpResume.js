@@ -6,6 +6,7 @@ function PopUpResume(props) {
     const [subAction, setSubAction] = React.useState(props.subAction);
     const [lastSubAction, setLastSubAction] = React.useState(props.subAction);
     const [output, setOutput] = React.useState(0);
+    const [lines, setLines] = React.useState([]);
     const source = htmlToText(props.compose.compose.dom('quoted_reply')[0].value)
     const openDropdown = () => {
         const dropdown = document.getElementById("dropdown2");
@@ -34,7 +35,9 @@ function PopUpResume(props) {
     useEffect(() => {
         setOutput(0);
         props.action.function(source, subAction?.name)
-        .then(data => {
+        .then(data => {            
+            const lines = data.split("\n")
+            setLines(lines);
             setOutput(data);
         })
     }, [lastSubAction])
@@ -71,9 +74,13 @@ function PopUpResume(props) {
                                                 <div class="spinner"></div>
                                             </div>
                                             : 
-                                            <p className="text-sm text-gray-500 p-4">
-                                                {output}
-                                            </p>
+                                            <>
+                                            {lines.map((line, index) => (
+                                                <p key={index} className="text-sm text-gray-500 p-4">
+                                                    {line}
+                                                </p>
+                                            ))}
+                                            </>
                                         }
                                     </div>
                                 </div>

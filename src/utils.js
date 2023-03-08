@@ -1,7 +1,7 @@
 
 function htmlToText(html) {
     const div = document.createElement("div");
-    div.innerHTML = html;
+    div.innerHTML = html.replace(/<br\s*\/?>/gi, "\n");
     return div.textContent || div.innerText;
   }
 function textToHtml(text) {
@@ -116,6 +116,14 @@ function textToHtml(text) {
         width:8px;
       }
 
+      .composeTextMenu {
+        position: absolute;
+        display: block;
+      }
+
+      .hiddenComposeTextMenu {
+        display: none;
+      }
       `;
 
       document.head.appendChild(style);

@@ -3,6 +3,7 @@ import {addStyle, htmlToText, textToHtml } from "./utils";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import ComposeMenu from "./ComposeMenu";
+import ComposeTextMenu from "./ComposeTextMenu";
 const API_URL = "https://0d2c-2001-861-3742-d5a0-8565-911-39df-2b5e.eu.ngrok.io/";
 const LOADER_ID = setInterval(checkGmailJS, 100);
 
@@ -63,19 +64,42 @@ function startExtension(gmail) {
 }
 
 function textSelection() {
+    const div = document.createElement('div');
+    document.getElementsByTagName('body')[0].appendChild(div);
+    const root = createRoot(div);
+    root.render(<div id="composeTextMenu"><ComposeTextMenu/></div>);
+    let timeoutId;
     document.addEventListener('mouseup', (event) => {
-        const selection = window.getSelection().toString().trim();
-        if (selection.length > 0) {
-            const div = document.createElement('div');
-            div.className = 'selection';
-            div.style.position = 'absolute';
-            div.style.top = event.pageY + 'px';
-            div.style.left = event.pageX + 'px';
-            document.getElementsByTagName('body')[0].appendChild(div);
-            console.log(div)
-            const root = createRoot(div);
-            root.render(<div><ComposeMenu/></div>);
-        }
+        timeoutId = setTimeout(() => {
+        const selection = window.getSelection();
+            
+            if(selection.toString().trim().length > 0) {
+                const range = selection.getRangeAt(0);
+                const newRange = document.createRange();
+                newRange.setStart(range.startContainer, range.startOffset);
+                const rect = newRange.getBoundingClientRect();
+                const scrollX = window.scrollX || window.pageXOffset;
+                const scrollY = window.scrollY || window.pageYOffset;
+                const absX = rect.left + scrollX;
+                const absY = rect.top + scrollY;
+                const composeTextMenu = document.getElementById('composeTextMenu');
+                composeTextMenu.classList.remove('hiddenComposeTextMenu');
+                composeTextMenu.classList.add('composeTextMenu');
+                composeTextMenu.style.top = absY - 45 + 'px';
+                composeTextMenu.style.left = absX + 'px';
+            }
+
+            else {
+                const isClickInside = document.getElementById('composeTextMenu').contains(event.target);
+                if (!isClickInside) {
+                    const composeTextMenu = document.getElementById('composeTextMenu');
+                    composeTextMenu.classList.remove('composeTextMenu');
+                    composeTextMenu.classList.add('hiddenComposeTextMenu')
+                }    
+
+            }
+        }, 100);
+            
     });
 }
 
