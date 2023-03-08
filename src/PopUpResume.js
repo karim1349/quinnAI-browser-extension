@@ -6,7 +6,6 @@ function PopUpResume(props) {
     const [subAction, setSubAction] = React.useState(props.subAction);
     const [lastSubAction, setLastSubAction] = React.useState(props.subAction);
     const [output, setOutput] = React.useState(0);
-    const [lines, setLines] = React.useState([]);
     const source = htmlToText(props.compose.compose.dom('quoted_reply')[0].value)
     const openDropdown = () => {
         const dropdown = document.getElementById("dropdown2");
@@ -36,8 +35,6 @@ function PopUpResume(props) {
         setOutput(0);
         props.action.function(source, subAction?.name)
         .then(data => {            
-            const lines = data.split("\n")
-            setLines(lines);
             setOutput(data);
         })
     }, [lastSubAction])
@@ -68,21 +65,16 @@ function PopUpResume(props) {
                                     <h2 className="text-sm text-black" >
                                         {props.action.label}
                                     </h2>
-                                    <div class="w-100 h-100 max-h-96 overflow-scroll inputArea mt-5 mb-5" id="resume" name="resume" readonly>
                                         {output == 0 ? 
-                                            <div class="spinner-container p-4">
-                                                <div class="spinner"></div>
+                                            <div class="w-100 h-100 max-h-96 overflow-scroll inputArea mt-5 mb-5" id="resume" name="resume" readonly>
+                                                <div class="spinner-container p-4">
+                                                    <div class="spinner"></div>
+                                                </div>
                                             </div>
                                             : 
-                                            <>
-                                            {lines.map((line, index) => (
-                                                <p key={index} className="text-sm text-gray-500 p-4">
-                                                    {line}
-                                                </p>
-                                            ))}
-                                            </>
+                                            <textarea className="w-100 h-100 max-h-96 overflow-scroll inputArea mt-5 mb-5 text-sm text-gray-500 p-4 popUpTextarea" onChange={(e) => {setBody(e.target.value); setLastSubAction(-1)}} value={output} disabled>
+                                            </textarea>
                                         }
-                                    </div>
                                 </div>
                             </div>
                         </div>

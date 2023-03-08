@@ -6,7 +6,6 @@ function PopUpActions(props) {
     const [subAction, setSubAction] = React.useState(props.subAction);
     const [lastSubAction, setLastSubAction] = React.useState(props.subAction);
     const [body, setBody] = React.useState(props.compose ? htmlToText(props.compose.compose.body()) : window.getSelection().toString().trim());
-    const [lines, setLines] = React.useState([]);
     const [output, setOutput] = React.useState(0);
     const openDropdown = () => {
         const dropdown = document.getElementById("dropdown2");
@@ -53,8 +52,6 @@ function PopUpActions(props) {
             console.log(props.action)
             props.action.function(body, subAction?.name)
             .then(data => {
-                const lines = data.split("\n")
-                setLines(lines);
                 setOutput(data);
             })    
         }
@@ -98,21 +95,16 @@ function PopUpActions(props) {
                                     <h2 className="text-sm text-black" >
                                         Output
                                     </h2>
-                                    <div class="w-100 h-100 max-h-96 overflow-scroll inputArea mt-5 mb-5" id="resume" name="resume">
-                                            {output == 0 ? 
+                                        {output == 0 ?
+                                            <div class="w-100 h-100 max-h-96 overflow-scroll inputArea mt-5 mb-5" id="resume" name="resume">
                                                 <div class="spinner-container p-4">
                                                     <div class="spinner"></div>
                                                 </div>
-                                                : 
-                                                <>
-                                                {lines.map((line, index) => (
-                                                    <p key={index} className="text-sm text-gray-500 p-4">
-                                                        {line}
-                                                    </p>
-                                                ))}
-                                                </>
-                                            }
-                                    </div>
+                                            </div>
+                                            : 
+                                            <textarea className="w-100 h-100 max-h-96 overflow-scroll inputArea mt-5 mb-5 text-sm text-gray-500 p-4 popUpTextarea" onChange={(e) => {setBody(e.target.value); setLastSubAction(-1)}} value={output} disabled>
+                                            </textarea>
+                                        }
                                 </div>
                             </div>
                         </div>
