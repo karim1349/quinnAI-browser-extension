@@ -5,6 +5,7 @@ import actions from "./constants";
 
 function ComposeMenu(compose) {
   const [action, setAction ] = React.useState(0);
+  const [subAction, setSubAction ] = React.useState(0);
   const [secondDropdown, setSecondDropdown ] = React.useState(0);
 
   const openDropdown = () => {
@@ -44,8 +45,9 @@ function ComposeMenu(compose) {
     }
   }
 
-  const executeAction = async (action) => {
+  const executeAction = async (action, subAction) => {
     setAction(action)
+    setSubAction(subAction)
   }
   //Event listener on click somewhere else close dropdown
   document.addEventListener("click", function (event) {
@@ -121,7 +123,7 @@ function ComposeMenu(compose) {
                     {action.subActions.map((subAction, index) => {
                       return (
                         <li>
-                          <a onClick={() => executeAction(action)} class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">{subAction.label}</a>
+                          <a onClick={() => executeAction(action, subAction)} class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">{subAction.label}</a>
                         </li>
                       )
                     })}
@@ -136,9 +138,9 @@ function ComposeMenu(compose) {
         action.popUpType == 0 ?
           null
         : action.popUpType == 1 ? 
-          <PopUpResume setAction={setAction} action={action} compose={compose}/> 
+          <PopUpResume setAction={setAction} action={action} subAction={subAction} compose={compose}/> 
         : action.popUpType == 2 ?
-          <PopUpActions setAction={setAction} action={action} compose={compose}/> 
+          <PopUpActions setAction={setAction} action={action} subAction={subAction} compose={compose}/> 
         : null
       }
     </div>

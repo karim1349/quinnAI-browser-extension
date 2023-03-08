@@ -3,7 +3,7 @@ import {addStyle, htmlToText, textToHtml } from "./utils";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import ComposeMenu from "./ComposeMenu";
-const API_URL = "https://quinn-development.herokuapp.com/";
+const API_URL = "https://0d2c-2001-861-3742-d5a0-8565-911-39df-2b5e.eu.ngrok.io/";
 const LOADER_ID = setInterval(checkGmailJS, 100);
 
 function checkGmailJS() {
@@ -42,7 +42,7 @@ function startExtension(gmail) {
                 },
                 body: JSON.stringify({
                     "source": htmlToText(compose.dom('quoted_reply')[0].value),
-                    "user": userEmail,
+                    "sender": userEmail,
                     "label_id": 0
                 })
             })

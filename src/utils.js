@@ -87,8 +87,37 @@ function textToHtml(text) {
         background-color: grey;
         border-radius: 10px;
       }
+      #dropdown {
+        top: -11.5rem;
+      }
+
+      .refreshButton {
+        border: 1px solid #1DA1F2;
+        border-radius: 10px;
+        height: 30px;
+        width: 30px;
+        padding:5px;
+        margin-left:20px;
+      }
+
+      .refreshButton:hover {
+        cursor: pointer;
+      }
+
+      .popUpTextarea {
+        border: none;
+        outline: none;
+        resize: none;
+        min-width:100%;
+      }
+
+      .popUpTextarea::-webkit-scrollbar {
+        background-color: transparent;
+        width:8px;
+      }
 
       `;
+
       document.head.appendChild(style);
   }
 

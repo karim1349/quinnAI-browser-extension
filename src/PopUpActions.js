@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
+import { RefreshIcon } from "./icons";
 import { htmlToText } from "./utils";
 
 function PopUpActions(props) {
-    const [label, setLabel] = React.useState('');
+    const [subAction, setSubAction] = React.useState(props.subAction);
+    const [lastSubAction, setLastSubAction] = React.useState(props.subAction);
     const [body, setBody] = React.useState(htmlToText(props.compose.compose.body()));
     const [output, setOutput] = React.useState(0);
     //setBody(htmlToText(props.compose.compose.body()));
@@ -36,12 +38,16 @@ function PopUpActions(props) {
     }
 
     useEffect(() => {  
-        console.log(props.action)
-        props.action.function(body)
-        .then(data => {
-            setOutput(data);
-        })
-    }, [])
+        if(lastSubAction != -1) 
+        {
+            setOutput(0);
+            console.log(props.action)
+            props.action.function(body, subAction?.name)
+            .then(data => {
+                setOutput(data);
+            })    
+        }
+    }, [lastSubAction])
     return (
         <div className="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
             <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -67,13 +73,13 @@ function PopUpActions(props) {
                                 <div className="mt-2 w-100">
 
                                     <h2 className="text-sm text-black" >
+                                        {subAction?.label}
+                                    </h2>
+                                    <h2 className="text-sm text-black" >
                                         Email context
                                     </h2>
-                                    <div class="w-100 h-100 max-h-96 overflow-scroll inputArea mt-5 mb-5" id="resume" name="resume" style={{minHeight:150}}>
-                                        <p className="text-sm text-gray-500 p-4">
-                                            {body}
-                                        </p>
-                                    </div>
+                                    <textarea className="w-100 h-100 max-h-96 overflow-scroll inputArea mt-5 mb-5 text-sm text-gray-500 p-4 popUpTextarea"  onChange={(e) => {setBody(e.target.value); setLastSubAction(-1)}} value={body}>
+                                    </textarea>
                                     <h2 className="text-sm text-black" >
                                         Output
                                     </h2>
@@ -93,9 +99,20 @@ function PopUpActions(props) {
                         </div>
                     </div>
                     <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse justify-between rounded-b-lg">
-                        <button onClick={() => insert()} type="button" className="w-full inline-flex justify-center rounded-md border-transparent px-4 py-2 buttonConfirm text-base font-medium text-white hover:bg-blue-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm">
-                            Insérer
-                        </button>
+                        
+                    <div class="flex items-center">
+                            {
+                                lastSubAction == subAction ? 
+                                null :
+                                <div class="refreshButton" onClick={() => setLastSubAction(subAction)}>
+                                    <RefreshIcon/>
+                                </div>
+
+                            }
+                            <button onClick={() => insert()} type="button" className="w-full inline-flex justify-center rounded-md border-transparent px-4 py-2 buttonConfirm text-base font-medium text-white hover:bg-blue-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm">
+                                Insérer
+                            </button>
+                        </div>
                         <div>
                         
                         {
@@ -107,9 +124,7 @@ function PopUpActions(props) {
                                 <path d="M12.7119 2.36695V5.28869L0 6.25681H16.2714L12.7119 6.83652V8.15053L2.77762 8.90705H19.05L12.7119 9.7399V11.8993L3.40526 12.6075H19.6776L12.7119 13.3457C12.7119 14.0752 13.3029 14.6674 14.0308 14.6674H30.6811C31.409 14.6674 32 14.0752 32 13.3457V2.36695L22.3559 9.06164L12.7119 2.36695ZM32 0.754395H12.7119L22.3559 7.44908L32 0.754395Z" fill="#00ADEF"/>
                                 </svg>
                                 <span class="text-neutral-700 px-2 font-light text-sm whitespace-nowrap overflow-hidden w-24" style={{textOverflow:'ellipsis'}}>
-                                    {
-                                        label ? label : "Quinn AI"
-                                    }
+                                    {subAction?.label}
                                 </span>
                                 </div>
                                 <svg class="w-4 h-4 ml-2 rotate-0 transition-transform duration-300 ease-in-out" id="svgInset2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -117,10 +132,9 @@ function PopUpActions(props) {
                             <div id="dropdown2" class="z-10 hidden bg-white mx-2.5 my-2 rounded-lg shadow w-48 absolute">
                                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="multiLevelDropdownButton2">
                                 {props.action.subActions.map((subAction, index) => {
-                                    console.log(subAction);
                                     return(
-                                        <li>
-                                            <a onClick={() => setLabel(subAction.label)} class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{subAction.label}</a>
+                                        <li key={index}>
+                                            <a onClick={() => setSubAction(subAction)} class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{subAction.label}</a>
                                         </li>
                                     )
                                 })}

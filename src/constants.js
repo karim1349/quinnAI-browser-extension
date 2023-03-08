@@ -1,13 +1,13 @@
 import React from 'react';
 import { RedactIcon, SummarizeIcon, TranslateIcon, CorrectOrthographyIcon, MeliorateIcon, ChangeToneIcon, IdentifyActionsIcon } from './icons';
-import { correctOrthography } from './functions';
+import { change_tone_email, correctOrthography, detect_actions, meliorate, summarizeEmail, translate } from './functions';
 const actions = [
     {
         id:'1',
         name: 'REDACT',
         label: 'Rédiger',
         icon: <RedactIcon/>,
-        popUpType: 1,
+        popUpType: 2,
         function: function() {
             console.log("Redact");
             return Promise.resolve(1);
@@ -18,37 +18,22 @@ const actions = [
         name: 'SUMMARIZE',
         label: 'Résumer la conversation',
         icon: <SummarizeIcon/>,
-        popUpType: 2,
+        popUpType: 1,
         subActions: [
             {
                 name: 'BULLET_POINTS',
-                label: 'Bullet Points',
-                function: function() {
-                    console.log("Bullet points");
-                    return Promise.resolve(1);
-                }
+                label: 'Bullet Points'
             },
             {
                 name: 'SHORT_SUMMARY',
-                label: 'Court résumé',
-                function: function() {
-                    console.log("Short summary");
-                    return Promise.resolve(1);
-                }
+                label: 'Court résumé'
             },
             {
                 name: 'LONG_SUMMARY',
-                label: 'Long résumé',
-                function: function() {
-                    console.log("Long summary");
-                    return Promise.resolve(1);
-                }
+                label: 'Long résumé'
             }
         ],
-        function: function() {
-            console.log("Summarize");
-            return Promise.resolve(1);
-        }
+        function: summarizeEmail
     },
     {
         id: '3',
@@ -59,57 +44,30 @@ const actions = [
         subActions: [
             {
                 name: 'ENGLISH',
-                label: 'Anglais',
-                function: function() {
-                    console.log("English");
-                    return Promise.resolve(1);
-                }
+                label: 'Anglais'
             },
             {
                 name: 'FRENCH',
-                label: 'Français',
-                function: function() {
-                    console.log("French");
-                    return Promise.resolve(1);
-                }
+                label: 'Français'
             },
             {
                 name: 'SPANISH',
-                label: 'Espagnol',
-                function: function() {
-                    console.log("Spanish");
-                    return Promise.resolve(1);
-                }
+                label: 'Espagnol'
             },
             {
                 name: 'GERMAN',
-                label: 'Allemand',
-                function: function() {
-                    console.log("German");
-                    return Promise.resolve(1);
-                }
+                label: 'Allemand'
             },
             {
                 name: 'PORTUGUESE',
-                label: 'Portugais',
-                function: function() {
-                    console.log("Portuguese");
-                    return Promise.resolve(1);
-                }
+                label: 'Portugais'
             },
             {
                 name: 'DUTCH',
-                label: 'Néerlandais',
-                function: function() {
-                    console.log("Dutch");
-                    return Promise.resolve(1);
-                }
+                label: 'Néerlandais'
             }
         ],
-        function: function() {
-            console.log("Translate");
-            return Promise.resolve(1);
-        }
+        function: translate
     },
     {
         id: '4',
@@ -128,41 +86,22 @@ const actions = [
         subActions: [
             {
                 name: 'MELIORATE_WRITING',
-                label: 'Améliorer l\'écriture',
-                function: function() {
-                    console.log("Meliorate writing");
-                    return Promise.resolve(1);
-                }
+                label: 'Améliorer l\'écriture'
             },
             {
                 name: 'SHORTEN',
-                label: 'Raccourcir',
-                function: function() {
-                    console.log("Shorten");
-                    return Promise.resolve(1);
-                }
+                label: 'Raccourcir'
             },
             {
                 name: 'LENGTHEN',
-                label: 'Allonger',
-                function: function() {
-                    console.log("Lengthen");
-                    return Promise.resolve(1);
-                }
+                label: 'Allonger'
             },
             {
                 name: 'SIMPLIFY',
-                label: 'Simplifier',
-                function: function() {
-                    console.log("Simplify");
-                    return Promise.resolve(1);
-                }
+                label: 'Simplifier'
             }
         ],
-        function: function() {
-            console.log("Meliorate");
-            return Promise.resolve(1);
-        }
+        function: meliorate
     },
     {
         id: '6',
@@ -173,41 +112,22 @@ const actions = [
         subActions: [
             {
                 name: 'PROFESSIONAL',
-                label: 'Professionnel',
-                function: function() {
-                    console.log("Professional");
-                    return Promise.resolve(1);
-                }
+                label: 'Professionnel'
             },
             {
                 name: 'CASUAL',
-                label: 'Casuel',
-                function: function() {                  
-                    console.log("Casual");
-                    return Promise.resolve(1);
-                }
+                label: 'Casuel'
             },
             {
                 name: 'DIRECT',
-                label: 'Direct',
-                function: function() {
-                    console.log("Direct");
-                    return Promise.resolve(1);
-                }
+                label: 'Direct'
             },
             {
                 name: 'FRIENDLY',
-                label: 'Amical',
-                function: function() {
-                    console.log("Friendly");
-                    return Promise.resolve(1);
-                }
+                label: 'Amical'
             }
         ],
-        function: function() {
-            console.log("Change tone");
-            return Promise.resolve(1);
-        }
+        function: change_tone_email
     },
     {
         id: '7',
@@ -215,10 +135,7 @@ const actions = [
         label: 'Identifier les actions à prendre',
         icon: <IdentifyActionsIcon/>,
         popUpType: 1,
-        function: function() {
-            console.log("Identify actions");
-            return Promise.resolve(1);
-        }
+        function: detect_actions
     }
 ]
 
