@@ -27,6 +27,7 @@ function startExtension(gmail) {
     gmail.observe.on("load", () => {
         gmail.observe.on("compose", async (compose) => {
             addStyle();
+            textSelection();
             const button = document.createElement("td");
             document.getElementsByClassName("btC")[0].insertBefore(button, document.getElementsByClassName("btC")[0].childNodes[1]);
             const root = createRoot(button);
@@ -58,6 +59,23 @@ function startExtension(gmail) {
             })
             })
 
+    });
+}
+
+function textSelection() {
+    document.addEventListener('mouseup', (event) => {
+        const selection = window.getSelection().toString().trim();
+        if (selection.length > 0) {
+            const div = document.createElement('div');
+            div.className = 'selection';
+            div.style.position = 'absolute';
+            div.style.top = event.pageY + 'px';
+            div.style.left = event.pageX + 'px';
+            document.getElementsByTagName('body')[0].appendChild(div);
+            console.log(div)
+            const root = createRoot(div);
+            root.render(<div><ComposeMenu/></div>);
+        }
     });
 }
 
