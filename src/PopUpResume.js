@@ -48,9 +48,9 @@ function PopUpResume(props) {
                         <div>
                             <div class="absolute right-2" onClick={() => props.setAction(0)}>
                                 <svg class="cursor-pointer" width="40" height="40" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M20 38.1395C30.0182 38.1395 38.1395 30.0182 38.1395 20C38.1395 9.98181 30.0182 1.86047 20 1.86047C9.98181 1.86047 1.86047 9.98181 1.86047 20C1.86047 30.0182 9.98181 38.1395 20 38.1395ZM20 40C31.0457 40 40 31.0457 40 20C40 8.95431 31.0457 0 20 0C8.95431 0 0 8.95431 0 20C0 31.0457 8.95431 40 20 40Z" fill="#5598D8"/>
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M25.2621 14.7379C25.6254 15.1011 25.6254 15.6901 25.2621 16.0534L16.0533 25.2622C15.69 25.6255 15.101 25.6255 14.7378 25.2622C14.3745 24.899 14.3745 24.31 14.7378 23.9467L23.9466 14.7379C24.3099 14.3746 24.8989 14.3746 25.2621 14.7379Z" fill="#5598D8"/>
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M25.2621 25.2623C24.8989 25.6255 24.3099 25.6255 23.9466 25.2623L14.7378 16.0534C14.3745 15.6902 14.3745 15.1012 14.7378 14.7379C15.101 14.3746 15.69 14.3746 16.0533 14.7379L25.2621 23.9467C25.6254 24.31 25.6254 24.899 25.2621 25.2623Z" fill="#5598D8"/>
+                                    <path fillRule="evenodd" clipRule="evenodd" d="M20 38.1395C30.0182 38.1395 38.1395 30.0182 38.1395 20C38.1395 9.98181 30.0182 1.86047 20 1.86047C9.98181 1.86047 1.86047 9.98181 1.86047 20C1.86047 30.0182 9.98181 38.1395 20 38.1395ZM20 40C31.0457 40 40 31.0457 40 20C40 8.95431 31.0457 0 20 0C8.95431 0 0 8.95431 0 20C0 31.0457 8.95431 40 20 40Z" fill="#5598D8"/>
+                                    <path fillRule="evenodd" clipRule="evenodd" d="M25.2621 14.7379C25.6254 15.1011 25.6254 15.6901 25.2621 16.0534L16.0533 25.2622C15.69 25.6255 15.101 25.6255 14.7378 25.2622C14.3745 24.899 14.3745 24.31 14.7378 23.9467L23.9466 14.7379C24.3099 14.3746 24.8989 14.3746 25.2621 14.7379Z" fill="#5598D8"/>
+                                    <path fillRule="evenodd" clipRule="evenodd" d="M25.2621 25.2623C24.8989 25.6255 24.3099 25.6255 23.9466 25.2623L14.7378 16.0534C14.3745 15.6902 14.3745 15.1012 14.7378 14.7379C15.101 14.3746 15.69 14.3746 16.0533 14.7379L25.2621 23.9467C25.6254 24.31 25.6254 24.899 25.2621 25.2623Z" fill="#5598D8"/>
                                 </svg>
                             </div>
                             <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
@@ -72,8 +72,9 @@ function PopUpResume(props) {
                                                 </div>
                                             </div>
                                             : 
-                                            <textarea className="w-100 h-100 max-h-96 overflow-scroll inputArea mt-5 mb-5 text-sm text-gray-500 p-4 popUpTextarea" onChange={(e) => {setBody(e.target.value); setLastSubAction(-1)}} value={output} disabled>
-                                            </textarea>
+                                            <div className="w-100 h-100 max-h-96 overflow-scroll inputArea mt-5 mb-5 text-sm text-gray-500 p-4 popUpTextarea">
+                                                {output}
+                                            </div>
                                         }
                                 </div>
                             </div>
@@ -106,7 +107,7 @@ function PopUpResume(props) {
                                         {subAction?.label}
                                     </span>
                                     </div>
-                                    <svg class="w-4 h-4 ml-2 rotate-0 transition-transform duration-300 ease-in-out" id="svgInset2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    <svg class="w-4 h-4 ml-2 rotate-0 transition-transform duration-300 ease-in-out" id="svgInset2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
                                 </button>
 
                                 <div id="dropdown2" class="z-10 hidden bg-white mx-2.5 my-2 rounded-lg shadow w-48 absolute">

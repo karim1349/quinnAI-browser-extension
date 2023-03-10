@@ -30,12 +30,12 @@ function startExtension(gmail) {
             addStyle();
             textSelection();
             const button = document.createElement("td");
-            document.getElementsByClassName("btC")[0].insertBefore(button, document.getElementsByClassName("btC")[0].childNodes[1]);
+            compose.$el[0].getElementsByClassName("btC")[0].insertBefore(button, compose.$el[0].getElementsByClassName("btC")[0].childNodes[1]);
             const root = createRoot(button);
             root.render(<ComposeMenu compose={compose} />);
-            const compose_ref = gmail.dom.composes()[0];
             var container = document.createElement('div');
             container.className = 'container';
+            console.log(compose)
             await compose.$el[0].appendChild(container);
             await fetch(API_URL + 'api/emails/generate_headlines/', {
                 method: 'POST',
@@ -52,10 +52,12 @@ function startExtension(gmail) {
                 return response.json();
             })
             .then(data => {
-                var headlines = data.body.split("|");
-                
-                for(var i = 0; i < 4; i++) {
-                    addHeadlineButton(container, headlines[i], compose);
+                if(data.body) {
+                    var headlines = data.body.split("|");
+                    
+                    for(var i = 0; i < 4; i++) {
+                        addHeadlineButton(container, headlines[i], compose);
+                    }
                 }
             })
             })
