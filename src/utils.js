@@ -110,6 +110,7 @@ function textToHtml(text) {
         resize: none;
         min-width:100%;
         max-height: 350px;
+        white-space: pre-line;
       }
 
       .popUpTextarea::-webkit-scrollbar {

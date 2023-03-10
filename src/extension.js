@@ -35,33 +35,34 @@ function startExtension(gmail) {
             root.render(<ComposeMenu compose={compose} />);
             var container = document.createElement('div');
             container.className = 'container';
-            console.log(compose)
             await compose.$el[0].appendChild(container);
-            await fetch(API_URL + 'api/emails/generate_headlines/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    "source": htmlToText(compose.dom('quoted_reply')[0].value),
-                    "sender": userEmail,
-                    "label_id": 0
+            if(compose.dom('quoted_reply')[0].value)
+            {
+                await fetch(API_URL + 'api/emails/generate_headlines/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        "source": htmlToText(compose.dom('quoted_reply')[0].value),
+                        "sender": userEmail,
+                        "label_id": 0
+                    })
                 })
-            })
-            .then(response => {
-                return response.json();
-            })
-            .then(data => {
-                if(data.body) {
-                    var headlines = data.body.split("|");
-                    
-                    for(var i = 0; i < 4; i++) {
-                        addHeadlineButton(container, headlines[i], compose);
+                .then(response => {
+                    return response.json();
+                })
+                .then(data => {
+                    if(data.body) {
+                        var headlines = data.body.split("|");
+                        
+                        for(var i = 0; i < 4; i++) {
+                            addHeadlineButton(container, headlines[i], compose);
+                        }
                     }
-                }
-            })
-            })
-
+                })
+            }
+        })
     });
 }
 
