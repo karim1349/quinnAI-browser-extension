@@ -77,6 +77,12 @@ function textSelection() {
     const root = createRoot(div);
     root.render(<div id="composeTextMenu"><ComposeTextMenu/></div>);
     let timeoutId;
+    document.addEventListener('keydown', (event) => {
+        
+        const composeTextMenu = document.getElementById('composeTextMenu');
+        composeTextMenu?.classList.remove('composeTextMenu');
+        composeTextMenu?.classList.add('hiddenComposeTextMenu');
+    });
     document.addEventListener('mouseup', (event) => {
         timeoutId = setTimeout(() => {
         const selection = window.getSelection();
