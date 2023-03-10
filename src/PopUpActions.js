@@ -5,8 +5,8 @@ import { htmlToText } from "./utils";
 function PopUpActions(props) {
     const [subAction, setSubAction] = React.useState(props.subAction);
     const [lastSubAction, setLastSubAction] = React.useState(props.subAction);
-    const [body, setBody] = React.useState(props.action.name == 'REDACT' ? htmlToText(props.compose.compose.dom('quoted_reply')[0].value) : props.compose ? htmlToText(props.compose.compose.body()) : window.getSelection().toString().trim());
-    const initialBody = props.action.name == 'REDACT' ? htmlToText(props.compose.compose.dom('quoted_reply')[0].value) : props.compose ? htmlToText(props.compose.compose.body()) : window.getSelection().toString().trim();
+    const [body, setBody] = React.useState(props.action.name == 'REDACT' ? htmlToText(props.compose.compose.dom('quoted_reply')[0].value) : props.compose ? htmlToText(props.compose.compose.body()) : props.selectedText);
+    const initialBody = props.action.name == 'REDACT' ? htmlToText(props.compose.compose.dom('quoted_reply')[0].value) : props.compose ? htmlToText(props.compose.compose.body()) : props.selectedText;
     const [output, setOutput] = React.useState(0);
     const openDropdown = () => {
         const dropdown = document.getElementById("dropdown2");
@@ -58,8 +58,8 @@ function PopUpActions(props) {
     }, [lastSubAction])
 
     useEffect(() => {
-        if(props.compose === null) setBody(window.getSelection().toString().trim());
-    }, [props.compose])
+        if(props.compose === null) setBody(props.selectedText);
+    }, [])
     return (
         <div className="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
             <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -90,7 +90,7 @@ function PopUpActions(props) {
                                     <h2 className="text-sm text-black" >
                                         Email context
                                     </h2>
-                                    <div className="w-100 overflow-scroll inputArea mt-5 mb-5 text-sm text-gray-500 p-4 popUpTextarea" contentEditable onKeyDown={(e) => {setBody(e.target.outerText); setLastSubAction(-1)}} suppressContentEditableWarning={true}>
+                                    <div className="w-100 overflow-scroll inputArea mt-5 mb-5 text-sm text-gray-500 p-4 popUpTextarea" contentEditable onInput={(e) => {setBody(e.target.outerText); setLastSubAction(-1)}} suppressContentEditableWarning={true}>
                                         {initialBody}
                                     </div>
                                     <h2 className="text-sm text-black" >
@@ -114,14 +114,9 @@ function PopUpActions(props) {
                     <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse justify-between rounded-b-lg">
                         
                     <div className="flex items-center">
-                            {
-                                lastSubAction == subAction ? 
-                                null :
-                                <div className="refreshButton" onClick={() => setLastSubAction(subAction)} onMouseDown={(e) => e.preventDefault()}>
-                                    <RefreshIcon/>
-                                </div>
-
-                            }
+                                <button onClick={() => {setLastSubAction(subAction)}} onMouseDown={(e) => e.preventDefault()} onMouseUp={(e) => e.preventDefault()} className={(lastSubAction == subAction ? "hidden " : "") + "w-full inline-flex justify-center rounded-md border-transparent px-4 py-2 buttonConfirm text-base font-medium text-white hover:bg-blue-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"}>
+                                    Générer
+                                </button>
                             <button onClick={() => insert()} onMouseDown={(e) => e.preventDefault()} type="button" className="w-full inline-flex justify-center rounded-md border-transparent px-4 py-2 buttonConfirm text-base font-medium text-white hover:bg-blue-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm">
                                 Insérer
                             </button>

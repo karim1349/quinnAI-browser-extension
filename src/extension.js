@@ -78,7 +78,8 @@ function textSelection() {
     root.render(<div id="composeTextMenu"><ComposeTextMenu/></div>);
     let timeoutId;
     document.addEventListener('keydown', (event) => {
-        
+        const isClickInside = document.getElementById('composeTextMenu').contains(event.target);
+        if(isClickInside) return;
         const composeTextMenu = document.getElementById('composeTextMenu');
         composeTextMenu?.classList.remove('composeTextMenu');
         composeTextMenu?.classList.add('hiddenComposeTextMenu');
@@ -86,21 +87,24 @@ function textSelection() {
     document.addEventListener('mouseup', (event) => {
         timeoutId = setTimeout(() => {
         const selection = window.getSelection();
-            
             if(selection.toString().trim().length > 0) {
-                const range = selection.getRangeAt(0);
-                const newRange = document.createRange();
-                newRange.setStart(range.startContainer, range.startOffset);
-                const rect = newRange.getBoundingClientRect();
-                const scrollX = window.scrollX || window.pageXOffset;
-                const scrollY = window.scrollY || window.pageYOffset;
-                const absX = rect.left + scrollX;
-                const absY = rect.top + scrollY;
-                const composeTextMenu = document.getElementById('composeTextMenu');
-                composeTextMenu.classList.remove('hiddenComposeTextMenu');
-                composeTextMenu.classList.add('composeTextMenu');
-                composeTextMenu.style.top = absY - 45 + 'px';
-                composeTextMenu.style.left = absX + 'px';
+                for(var i = 0; i < document.querySelectorAll('.Ap').length; i++) {
+                    if(document.querySelectorAll('.Ap')[i].contains(selection.anchorNode)) {
+                        const range = selection.getRangeAt(0);
+                        const newRange = document.createRange();
+                        newRange.setStart(range.startContainer, range.startOffset);
+                        const rect = newRange.getBoundingClientRect();
+                        const scrollX = window.scrollX || window.pageXOffset;
+                        const scrollY = window.scrollY || window.pageYOffset;
+                        const absX = rect.left + scrollX;
+                        const absY = rect.top + scrollY;
+                        const composeTextMenu = document.getElementById('composeTextMenu');
+                        composeTextMenu.classList.remove('hiddenComposeTextMenu');
+                        composeTextMenu.classList.add('composeTextMenu');
+                        composeTextMenu.style.top = absY - 45 + 'px';
+                        composeTextMenu.style.left = absX + 'px';
+                    }
+                }
             }
 
             else {

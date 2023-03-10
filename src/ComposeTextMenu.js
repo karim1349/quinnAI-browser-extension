@@ -141,7 +141,7 @@ function ComposeTextMenu() {
         action.popUpType == 0 ?
           null
         : action.popUpType == 2 ?
-          <PopUpActions setAction={setAction} action={action} subAction={subAction} compose={null}/> 
+          <PopUpActions setAction={setAction} action={action} subAction={subAction} compose={null} selectedText={window.getSelection().toString()} />
         : null
       }
     </div>
