@@ -1,6 +1,6 @@
 import React from 'react';
 import { RedactIcon, SummarizeIcon, TranslateIcon, CorrectOrthographyIcon, MeliorateIcon, ChangeToneIcon, IdentifyActionsIcon } from './icons';
-import { change_tone_email, correctOrthography, detect_actions, meliorate, summarizeEmail, translate } from './functions';
+import { change_tone_email, correctOrthography, detect_actions, meliorate, redact_answer, summarizeEmail, translate } from './functions';
 const actions = [
     {
         id:'1',
@@ -8,10 +8,7 @@ const actions = [
         label: 'Rédiger',
         icon: <RedactIcon/>,
         popUpType: 2,
-        function: function() {
-            console.log("Redact");
-            return Promise.resolve(1);
-        }
+        function: redact_answer
     },
     {
         id: '2',
@@ -122,10 +119,10 @@ const actions = [
                 name: 'DIRECT',
                 label: 'Direct'
             },
-            {
-                name: 'FRIENDLY',
-                label: 'Amical'
-            }
+            //{
+            //    name: 'FRIENDLY',
+            //    label: 'Amical'
+            //}
         ],
         function: change_tone_email
     },

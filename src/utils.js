@@ -1,7 +1,7 @@
 
 function htmlToText(html) {
     const div = document.createElement("div");
-    div.innerHTML = html;
+    div.innerHTML = html.replace(/<br\s*\/?>/gi, "\n");
     return div.textContent || div.innerText;
   }
 function textToHtml(text) {
@@ -109,6 +109,8 @@ function textToHtml(text) {
         outline: none;
         resize: none;
         min-width:100%;
+        max-height: 350px;
+        white-space: pre-line;
       }
 
       .popUpTextarea::-webkit-scrollbar {
@@ -116,6 +118,15 @@ function textToHtml(text) {
         width:8px;
       }
 
+      .composeTextMenu {
+        position: absolute;
+        display: block;
+        z-index:9999;
+      }
+
+      .hiddenComposeTextMenu {
+        display: none;
+      }
       `;
 
       document.head.appendChild(style);

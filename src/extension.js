@@ -3,6 +3,7 @@ import {addStyle, htmlToText, textToHtml } from "./utils";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import ComposeMenu from "./ComposeMenu";
+import ComposeTextMenu from "./ComposeTextMenu";
 const API_URL = "https://0d2c-2001-861-3742-d5a0-8565-911-39df-2b5e.eu.ngrok.io/";
 const LOADER_ID = setInterval(checkGmailJS, 100);
 
@@ -25,39 +26,98 @@ function startExtension(gmail) {
     document.head.insertBefore(linkToFlowbite, document.head.childNodes[0]);
     const userEmail = gmail.get.user_email();
     gmail.observe.on("load", () => {
+        addStyle();
+        textSelection();
+        gmail.observe.on("compose_cancelled", () => {
+            const composeTextMenu = document.getElementById('composeTextMenu');
+            composeTextMenu.classList.remove('composeTextMenu');
+            composeTextMenu.classList.add('hiddenComposeTextMenu')
+        })
         gmail.observe.on("compose", async (compose) => {
-            addStyle();
             const button = document.createElement("td");
-            document.getElementsByClassName("btC")[0].insertBefore(button, document.getElementsByClassName("btC")[0].childNodes[1]);
+            compose.$el[0].getElementsByClassName("btC")[0].insertBefore(button, compose.$el[0].getElementsByClassName("btC")[0].childNodes[1]);
             const root = createRoot(button);
             root.render(<ComposeMenu compose={compose} />);
-            const compose_ref = gmail.dom.composes()[0];
             var container = document.createElement('div');
             container.className = 'container';
             await compose.$el[0].appendChild(container);
-            await fetch(API_URL + 'api/emails/generate_headlines/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    "source": htmlToText(compose.dom('quoted_reply')[0].value),
-                    "sender": userEmail,
-                    "label_id": 0
+            if(compose.dom('quoted_reply')[0].value)
+            {
+                await fetch(API_URL + 'api/emails/generate_headlines/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        "source": htmlToText(compose.dom('quoted_reply')[0].value),
+                        "sender": userEmail,
+                        "label_id": 0
+                    })
                 })
-            })
-            .then(response => {
-                return response.json();
-            })
-            .then(data => {
-                var headlines = data.body.split("|");
-                
-                for(var i = 0; i < 4; i++) {
-                    addHeadlineButton(container, headlines[i], compose);
-                }
-            })
-            })
+                .then(response => {
+                    return response.json();
+                })
+                .then(data => {
+                    if(data.body) {
+                        var headlines = data.body.split("|");
+                        
+                        for(var i = 0; i < 4; i++) {
+                            addHeadlineButton(container, headlines[i], compose);
+                        }
+                    }
+                })
+            }
+        })
+    });
+}
 
+function textSelection() {
+    const div = document.createElement('div');
+    document.getElementsByTagName('body')[0].appendChild(div);
+    const root = createRoot(div);
+    root.render(<div id="composeTextMenu"><ComposeTextMenu/></div>);
+    let timeoutId;
+    document.addEventListener('keydown', (event) => {
+        const isClickInside = document.getElementById('composeTextMenu').contains(event.target);
+        if(isClickInside) return;
+        const composeTextMenu = document.getElementById('composeTextMenu');
+        composeTextMenu?.classList.remove('composeTextMenu');
+        composeTextMenu?.classList.add('hiddenComposeTextMenu');
+    });
+    document.addEventListener('mouseup', (event) => {
+        timeoutId = setTimeout(() => {
+        const selection = window.getSelection();
+            if(selection.toString().trim().length > 0) {
+                for(var i = 0; i < document.querySelectorAll('.Ap').length; i++) {
+                    if(document.querySelectorAll('.Ap')[i].contains(selection.anchorNode)) {
+                        const range = selection.getRangeAt(0);
+                        const newRange = document.createRange();
+                        newRange.setStart(range.startContainer, range.startOffset);
+                        const rect = newRange.getBoundingClientRect();
+                        const scrollX = window.scrollX || window.pageXOffset;
+                        const scrollY = window.scrollY || window.pageYOffset;
+                        const absX = rect.left + scrollX;
+                        const absY = rect.top + scrollY;
+                        const composeTextMenu = document.getElementById('composeTextMenu');
+                        composeTextMenu.classList.remove('hiddenComposeTextMenu');
+                        composeTextMenu.classList.add('composeTextMenu');
+                        composeTextMenu.style.top = absY - 45 + 'px';
+                        composeTextMenu.style.left = absX + 'px';
+                    }
+                }
+            }
+
+            else {
+                const isClickInside = document.getElementById('composeTextMenu').contains(event.target);
+                if (!isClickInside) {
+                    const composeTextMenu = document.getElementById('composeTextMenu');
+                    composeTextMenu.classList.remove('composeTextMenu');
+                    composeTextMenu.classList.add('hiddenComposeTextMenu')
+                }    
+
+            }
+        }, 100);
+            
     });
 }
 
