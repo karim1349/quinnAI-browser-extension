@@ -121,6 +121,7 @@ function textToHtml(text) {
       .composeTextMenu {
         position: absolute;
         display: block;
+        z-index:9999;
       }
 
       .hiddenComposeTextMenu {

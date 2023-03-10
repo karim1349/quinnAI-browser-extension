@@ -26,9 +26,14 @@ function startExtension(gmail) {
     document.head.insertBefore(linkToFlowbite, document.head.childNodes[0]);
     const userEmail = gmail.get.user_email();
     gmail.observe.on("load", () => {
+        addStyle();
+        textSelection();
+        gmail.observe.on("compose_cancelled", () => {
+            const composeTextMenu = document.getElementById('composeTextMenu');
+            composeTextMenu.classList.remove('composeTextMenu');
+            composeTextMenu.classList.add('hiddenComposeTextMenu')
+        })
         gmail.observe.on("compose", async (compose) => {
-            addStyle();
-            textSelection();
             const button = document.createElement("td");
             compose.$el[0].getElementsByClassName("btC")[0].insertBefore(button, compose.$el[0].getElementsByClassName("btC")[0].childNodes[1]);
             const root = createRoot(button);

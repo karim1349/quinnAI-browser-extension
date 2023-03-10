@@ -119,10 +119,10 @@ const actions = [
                 name: 'DIRECT',
                 label: 'Direct'
             },
-            {
-                name: 'FRIENDLY',
-                label: 'Amical'
-            }
+            //{
+            //    name: 'FRIENDLY',
+            //    label: 'Amical'
+            //}
         ],
         function: change_tone_email
     },

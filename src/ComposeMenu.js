@@ -9,19 +9,19 @@ function ComposeMenu(compose) {
   const [secondDropdown, setSecondDropdown ] = React.useState(0);
 
   const openDropdown = () => {
-    const dropdown = document.getElementById("dropdown");
+    const dropdown = compose.compose.$el[0].querySelector('#dropdown')
     if (dropdown.classList.contains("hidden")) {
   
-      document.getElementById("svgInset").classList.remove("rotate-0");
-      document.getElementById("svgInset").classList.add("rotate-180");
+      compose.compose.$el[0].querySelector("#svgInset").classList.remove("rotate-0");
+      compose.compose.$el[0].querySelector("#svgInset").classList.add("rotate-180");
       dropdown.classList.remove("hidden");
     } else {
   
-      document.getElementById("svgInset").classList.remove("rotate-180");
-      document.getElementById("svgInset").classList.add("rotate-0");
+      compose.compose.$el[0].querySelector("#svgInset").classList.remove("rotate-180");
+      compose.compose.$el[0].querySelector("#svgInset").classList.add("rotate-0");
       dropdown.classList.add("hidden");
-      if(document.getElementById("doubleDropdown").classList.contains("hidden") == false){
-        document.getElementById("doubleDropdown").classList.add("hidden");
+      if(compose.compose.$el[0].querySelector("#doubleDropdown").classList.contains("hidden") == false){
+        compose.compose.$el[0].querySelector("#doubleDropdown").classList.add("hidden");
       }
     }
   }
@@ -33,15 +33,15 @@ function ComposeMenu(compose) {
     while(parentElement.tagName != "LI"){
       parentElement = parentElement.parentElement;
     }
-    const secondDropdownElement = document.getElementById("doubleDropdown");
-    const firstDropdownWidth = document.getElementById("dropdown").offsetWidth;
+    const secondDropdownElement = compose.compose.$el[0].querySelector("#doubleDropdown");
+    const firstDropdownWidth = compose.compose.$el[0].querySelector("#dropdown").offsetWidth;
     secondDropdownElement.style.top = parentElement.getBoundingClientRect().top + "px";
     secondDropdownElement.style.left = parentElement.getBoundingClientRect().left + firstDropdownWidth + 10 + "px";
 
-    if(document.getElementById("doubleDropdown").classList.contains("hidden") == true){
-      document.getElementById("doubleDropdown").classList.remove("hidden");
+    if(compose.compose.$el[0].querySelector("#doubleDropdown").classList.contains("hidden") == true){
+      compose.compose.$el[0].querySelector("#doubleDropdown").classList.remove("hidden");
     } else if (oldId == id){
-      document.getElementById("doubleDropdown").classList.add("hidden");
+      compose.compose.$el[0].querySelector("#doubleDropdown").classList.add("hidden");
     }
   }
 
@@ -51,14 +51,14 @@ function ComposeMenu(compose) {
   }
   //Event listener on click somewhere else close dropdown
   document.addEventListener("click", function (event) {
-    const dropdown = document.getElementById("dropdown");
+    const dropdown = compose.compose.$el[0].querySelector("#dropdown");
     if(!dropdown) return;
     if (event.target.closest("#multiLevelDropdownButton")) return;
-    document.getElementById("svgInset").classList.remove("rotate-180");
-    document.getElementById("svgInset").classList.add("rotate-0");
+    compose.compose.$el[0].querySelector("#svgInset").classList.remove("rotate-180");
+    compose.compose.$el[0].querySelector("#svgInset").classList.add("rotate-0");
     dropdown.classList.add("hidden");
-    if(document.getElementById("doubleDropdown").classList.contains("hidden") == false){
-      document.getElementById("doubleDropdown").classList.add("hidden");
+    if(compose.compose.$el[0].querySelector("#doubleDropdown").classList.contains("hidden") == false){
+      compose.compose.$el[0].querySelector("#doubleDropdown").classList.add("hidden");
     }
   });
   return (
