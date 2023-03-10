@@ -1,6 +1,6 @@
 import { htmlToText } from "./utils";
 
-const API_URL = "https://0d2c-2001-861-3742-d5a0-8565-911-39df-2b5e.eu.ngrok.io/";
+const API_URL = "https://quinn-development.herokuapp.com/";
 
 async function correctOrthography(body) {
     //setLabel("Corriger l'orthographe");

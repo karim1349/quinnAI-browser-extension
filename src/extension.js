@@ -4,7 +4,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import ComposeMenu from "./ComposeMenu";
 import ComposeTextMenu from "./ComposeTextMenu";
-const API_URL = "https://0d2c-2001-861-3742-d5a0-8565-911-39df-2b5e.eu.ngrok.io/";
+const API_URL = "https://quinn-development.herokuapp.com/";
 const LOADER_ID = setInterval(checkGmailJS, 100);
 
 function checkGmailJS() {
