@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { RefreshIcon } from "./icons";
-import { htmlToText } from "./utils";
+import { htmlToText, textToHtml } from "./utils";
 
 function PopUpActions(props) {
     const [subAction, setSubAction] = React.useState(props.subAction);
@@ -33,7 +33,7 @@ function PopUpActions(props) {
     });
 
     const insert = () => {
-        if(props.compose) props.compose.compose.body(output);
+        if(props.compose) props.compose.compose.body(textToHtml(output));
         else {
             const selection = window.getSelection();
             const range = selection.getRangeAt(0);

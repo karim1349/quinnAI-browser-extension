@@ -4,6 +4,9 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import ComposeMenu from "./ComposeMenu";
 import ComposeTextMenu from "./ComposeTextMenu";
+import ScoringButton from "./ScoringButton";
+import InfoActions from "./InfoActions";
+import PopUpLabel from "./PopUpLabel";
 const API_URL = "https://quinn-development.herokuapp.com/";
 const LOADER_ID = setInterval(checkGmailJS, 100);
 
@@ -28,11 +31,21 @@ function startExtension(gmail) {
     gmail.observe.on("load", () => {
         addStyle();
         textSelection();
+        addScoringButton();
+        addPopUpLabel();
         gmail.observe.on("compose_cancelled", () => {
             const composeTextMenu = document.getElementById('composeTextMenu');
             composeTextMenu.classList.remove('composeTextMenu');
             composeTextMenu.classList.add('hiddenComposeTextMenu')
         })
+        //gmail.observe.on("view_thread", async (thread) => {
+        //    console.log("thread");
+        //    console.log(gmail.dom.email()); 
+        //    const button = document.createElement("div");
+        //    document.getElementsByClassName('amn')[0].appendChild(button);
+        //    const root = createRoot(button);
+        //    root.render(<InfoActions/>);
+        //})
         gmail.observe.on("compose", async (compose) => {
             const button = document.createElement("td");
             compose.$el[0].getElementsByClassName("btC")[0].insertBefore(button, compose.$el[0].getElementsByClassName("btC")[0].childNodes[1]);
@@ -71,6 +84,25 @@ function startExtension(gmail) {
     });
 }
 
+function addScoringButton() {
+    if(gmail.get.current_page() == 'inbox') {
+        const div = document.createElement('div');
+        div.classList.add('scoringButtonContainer');
+        gmail.dom.toolbar()[0].appendChild(div);
+        const root = createRoot(div);
+        root.render(<div id="scoringButton"><ScoringButton/></div>);    
+    }
+}
+
+function addPopUpLabel() {
+    if(gmail.get.current_page() == 'inbox') {
+        const div = document.createElement('div');
+        div.classList.add('labelButtonContainer');
+        document.getElementsByClassName('aAw')[0].appendChild(div);
+        const root = createRoot(div);
+        root.render(<div id="labelButton"><PopUpLabel/></div>);    
+    }
+}
 function textSelection() {
     const div = document.createElement('div');
     document.getElementsByTagName('body')[0].appendChild(div);

@@ -127,6 +127,39 @@ function textToHtml(text) {
       .hiddenComposeTextMenu {
         display: none;
       }
+
+      .bg-lightblue1 {
+        background-color: #EFF5FF;
+        border-bottom: 1px solid #E1E8ED;
+      }
+
+      .bg-lightblue2 {
+        background-color: #F3F9FE;
+        border-bottom: 1px solid #E1E8ED;
+      }
+      
+      .scoringButtonContainer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+
+      .score {
+        background-color:#87CEEB;
+        border-radius: 10px;
+        width:45px;
+        height:20px;
+        font-size: 13px;
+        justify-content: center;
+        line-height: 15px !important;
+        margin-right: 10px;
+        color:#E4E5E9;
+      }
+
+      .aAw {
+        max-width:250px !important;
+      }
       `;
 
       document.head.appendChild(style);
