@@ -27,59 +27,29 @@ function startExtension(gmail) {
     var scriptFlowbite = document.createElement('script');
     scriptFlowbite.src = 'https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.js';
     document.head.insertBefore(linkToFlowbite, document.head.childNodes[0]);
-    const userEmail = gmail.get.user_email();
     gmail.observe.on("load", () => {
         addStyle();
         textSelection();
         addScoringButton();
         addPopUpLabel();
+        
         gmail.observe.on("compose_cancelled", () => {
             const composeTextMenu = document.getElementById('composeTextMenu');
             composeTextMenu.classList.remove('composeTextMenu');
             composeTextMenu.classList.add('hiddenComposeTextMenu')
         })
-        //gmail.observe.on("view_thread", async (thread) => {
-        //    console.log("thread");
-        //    console.log(gmail.dom.email()); 
-        //    const button = document.createElement("div");
-        //    document.getElementsByClassName('amn')[0].appendChild(button);
-        //    const root = createRoot(button);
-        //    root.render(<InfoActions/>);
-        //})
+        gmail.observe.on("view_email", async (email) => {
+            const button = document.createElement("div");
+            email.dom()[0].querySelector('.gs').appendChild(button);
+            const root = createRoot(button);
+            root.render(<ComposeMenu email={email} popUpType={1}/>);
+        })
         gmail.observe.on("compose", async (compose) => {
             const button = document.createElement("td");
             compose.$el[0].getElementsByClassName("btC")[0].insertBefore(button, compose.$el[0].getElementsByClassName("btC")[0].childNodes[1]);
             const root = createRoot(button);
-            root.render(<ComposeMenu compose={compose} />);
-            var container = document.createElement('div');
-            container.className = 'container';
-            await compose.$el[0].appendChild(container);
-            if(compose.dom('quoted_reply')[0].value)
-            {
-                await fetch(API_URL + 'api/emails/generate_headlines/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        "source": htmlToText(compose.dom('quoted_reply')[0].value),
-                        "sender": userEmail,
-                        "label_id": 0
-                    })
-                })
-                .then(response => {
-                    return response.json();
-                })
-                .then(data => {
-                    if(data.body) {
-                        var headlines = data.body.split("|");
-                        
-                        for(var i = 0; i < 4; i++) {
-                            addHeadlineButton(container, headlines[i], compose);
-                        }
-                    }
-                })
-            }
+            root.render(<ComposeMenu compose={compose} popUpType={2}/>);
+            // headlineButtons(compose);
         })
     });
 }
@@ -203,4 +173,38 @@ function addHeadlineButton(container, text, compose) {
             compose.body(textToHtml(data.body));
         })
     });
+}
+
+async function headlineButtons(compose) {
+
+    const userEmail = window.gmail.get.user_email();
+    var container = document.createElement('div');
+    container.className = 'container';
+    await compose.$el[0].appendChild(container);
+    if(compose.dom('quoted_reply')[0].value)
+    {
+        await fetch(API_URL + 'api/emails/generate_headlines/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "source": htmlToText(compose.dom('quoted_reply')[0].value),
+                "sender": userEmail,
+                "label_id": 0
+            })
+        })
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            if(data.body) {
+                var headlines = data.body.split("|");
+                
+                for(var i = 0; i < 4; i++) {
+                    addHeadlineButton(container, headlines[i], compose);
+                }
+            }
+        })
+    }
 }

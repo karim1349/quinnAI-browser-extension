@@ -3,25 +3,25 @@ import PopUpActions from "./PopUpActions";
 import PopUpResume from "./PopUpResume";
 import actions from "./constants";
 
-function ComposeMenu(compose) {
+function ComposeMenu({compose, popUpType, email}) {
   const [action, setAction ] = React.useState(0);
   const [subAction, setSubAction ] = React.useState(0);
   const [secondDropdown, setSecondDropdown ] = React.useState(0);
-
+  const parentElementDom = popUpType == 2 ? compose.$el[0] : popUpType == 1 ? email.dom()[0].querySelector('.gs'): null ;
   const openDropdown = () => {
-    const dropdown = compose.compose.$el[0].querySelector('#dropdown')
+    const dropdown = parentElementDom.querySelector('#dropdown')
     if (dropdown.classList.contains("hidden")) {
   
-      compose.compose.$el[0].querySelector("#svgInset").classList.remove("rotate-0");
-      compose.compose.$el[0].querySelector("#svgInset").classList.add("rotate-180");
+      parentElementDom.querySelector("#svgInset").classList.remove("rotate-0");
+      parentElementDom.querySelector("#svgInset").classList.add("rotate-180");
       dropdown.classList.remove("hidden");
     } else {
   
-      compose.compose.$el[0].querySelector("#svgInset").classList.remove("rotate-180");
-      compose.compose.$el[0].querySelector("#svgInset").classList.add("rotate-0");
+      parentElementDom.querySelector("#svgInset").classList.remove("rotate-180");
+      parentElementDom.querySelector("#svgInset").classList.add("rotate-0");
       dropdown.classList.add("hidden");
-      if(compose.compose.$el[0].querySelector("#doubleDropdown").classList.contains("hidden") == false){
-        compose.compose.$el[0].querySelector("#doubleDropdown").classList.add("hidden");
+      if(parentElementDom.querySelector("#doubleDropdown").classList.contains("hidden") == false){
+        parentElementDom.querySelector("#doubleDropdown").classList.add("hidden");
       }
     }
   }
@@ -33,15 +33,16 @@ function ComposeMenu(compose) {
     while(parentElement.tagName != "LI"){
       parentElement = parentElement.parentElement;
     }
-    const secondDropdownElement = compose.compose.$el[0].querySelector("#doubleDropdown");
-    const firstDropdownWidth = compose.compose.$el[0].querySelector("#dropdown").offsetWidth;
+    const secondDropdownElement = parentElementDom.querySelector("#doubleDropdown");
+    console.log(parentElementDom.querySelector('#dropdown'))
+    const firstDropdownWidth = parentElementDom.querySelector("#dropdown").offsetWidth;
     secondDropdownElement.style.top = parentElement.getBoundingClientRect().top + "px";
-    secondDropdownElement.style.left = parentElement.getBoundingClientRect().left + firstDropdownWidth + 10 + "px";
+    secondDropdownElement.style.left = parentElement.getBoundingClientRect().left + firstDropdownWidth + (popUpType == 1 ? 0 : 10) + "px";
 
-    if(compose.compose.$el[0].querySelector("#doubleDropdown").classList.contains("hidden") == true){
-      compose.compose.$el[0].querySelector("#doubleDropdown").classList.remove("hidden");
+    if(parentElementDom.querySelector("#doubleDropdown").classList.contains("hidden") == true){
+      parentElementDom.querySelector("#doubleDropdown").classList.remove("hidden");
     } else if (oldId == id){
-      compose.compose.$el[0].querySelector("#doubleDropdown").classList.add("hidden");
+      parentElementDom.querySelector("#doubleDropdown").classList.add("hidden");
     }
   }
 
@@ -51,19 +52,19 @@ function ComposeMenu(compose) {
   }
   //Event listener on click somewhere else close dropdown
   document.addEventListener("click", function (event) {
-    const dropdown = compose.compose.$el[0].querySelector("#dropdown");
+    const dropdown = parentElementDom.querySelector("#dropdown");
     if(!dropdown) return;
     if (event.target.closest("#multiLevelDropdownButton")) return;
-    compose.compose.$el[0].querySelector("#svgInset").classList.remove("rotate-180");
-    compose.compose.$el[0].querySelector("#svgInset").classList.add("rotate-0");
+    parentElementDom.querySelector("#svgInset").classList.remove("rotate-180");
+    parentElementDom.querySelector("#svgInset").classList.add("rotate-0");
     dropdown.classList.add("hidden");
-    if(compose.compose.$el[0].querySelector("#doubleDropdown").classList.contains("hidden") == false){
-      compose.compose.$el[0].querySelector("#doubleDropdown").classList.add("hidden");
+    if(parentElementDom.querySelector("#doubleDropdown").classList.contains("hidden") == false){
+      parentElementDom.querySelector("#doubleDropdown").classList.add("hidden");
     }
   });
   return (
     <div>
-      <button id="multiLevelDropdownButton" onClick={() => openDropdown()} data-dropdown-toggle="dropdown" className="shadow rounded-lg px-4 py-2.5 mx-2.5 w-56 text-center inline-flex items-center justify-between focus:outline-none bg-white" type="button">
+      <button id="multiLevelDropdownButton" onClick={() => openDropdown()} data-dropdown-toggle="dropdown" className={"shadow rounded-lg px-4 py-2.5 mx-2.5 w-56 text-center inline-flex items-center justify-between focus:outline-none bg-white" + (popUpType == 1 ? " mt-8" : "")} type="button">
         <div className="flex items-center">
           <svg width="32" height="15" viewBox="0 0 32 15" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12.7119 2.36695V5.28869L0 6.25681H16.2714L12.7119 6.83652V8.15053L2.77762 8.90705H19.05L12.7119 9.7399V11.8993L3.40526 12.6075H19.6776L12.7119 13.3457C12.7119 14.0752 13.3029 14.6674 14.0308 14.6674H30.6811C31.409 14.6674 32 14.0752 32 13.3457V2.36695L22.3559 9.06164L12.7119 2.36695ZM32 0.754395H12.7119L22.3559 7.44908L32 0.754395Z" fill="#00ADEF"/>
@@ -81,10 +82,10 @@ function ComposeMenu(compose) {
         </div>
         <svg className="w-4 h-4 ml-2 rotate-0 transition-transform duration-300 ease-in-out" id="svgInset" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
       </button>
-      <div id="dropdown" className="z-10 hidden bg-white mx-2.5 my-2 h-40 rounded-lg shadow w-56 absolute overflow-y-scroll scrollableDropdown">
+      <div id="dropdown" className={"z-10 hidden bg-white mx-2.5 my-2 rounded-lg shadow w-56 scrollableDropdown" + (popUpType == 2 ? " absolute h-40 overflow-y-scroll" : null)}>
         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="multiLevelDropdownButton">
           {actions.map((action, index) => {
-            if(action.popUpType == 2) {
+            if(action.popUpType == popUpType) {
               if(action.subActions == undefined){
                 return (
                   <li key={index}>
@@ -140,7 +141,7 @@ function ComposeMenu(compose) {
         action.popUpType == 0 ?
           null
         : action.popUpType == 1 ? 
-          <PopUpResume setAction={setAction} action={action} subAction={subAction} compose={compose}/> 
+          <PopUpResume setAction={setAction} action={action} originalSubAction={subAction} email={email}/> 
         : action.popUpType == 2 ?
           <PopUpActions setAction={setAction} action={action} subAction={subAction} compose={compose}/> 
         : null

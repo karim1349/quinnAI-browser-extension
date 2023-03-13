@@ -1,6 +1,5 @@
 import React from "react";
 import PopUpActions from "./PopUpActions";
-import PopUpResume from "./PopUpResume";
 import actions from "./constants";
 
 function ComposeTextMenu() {

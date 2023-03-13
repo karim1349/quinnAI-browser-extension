@@ -5,8 +5,8 @@ import { htmlToText, textToHtml } from "./utils";
 function PopUpActions(props) {
     const [subAction, setSubAction] = React.useState(props.subAction);
     const [lastSubAction, setLastSubAction] = React.useState(props.subAction);
-    const [body, setBody] = React.useState(props.action.name == 'REDACT' ? htmlToText(props.compose.compose.dom('quoted_reply')[0].value) : props.compose ? htmlToText(props.compose.compose.body()) : props.selectedText);
-    const initialBody = props.action.name == 'REDACT' ? htmlToText(props.compose.compose.dom('quoted_reply')[0].value) : props.compose ? htmlToText(props.compose.compose.body()) : props.selectedText;
+    const [body, setBody] = React.useState(props.action.name == 'REDACT' ? htmlToText(props.compose.dom('quoted_reply')[0].value) : props.compose ? htmlToText(props.compose.body()) : props.selectedText);
+    const initialBody = props.action.name == 'REDACT' ? htmlToText(props.compose.dom('quoted_reply')[0].value) : props.compose ? htmlToText(props.compose.body()) : props.selectedText;
     const [output, setOutput] = React.useState(0);
     const openDropdown = () => {
         const dropdown = document.getElementById("dropdown2");
@@ -33,7 +33,7 @@ function PopUpActions(props) {
     });
 
     const insert = () => {
-        if(props.compose) props.compose.compose.body(textToHtml(output));
+        if(props.compose) props.compose.body(textToHtml(output));
         else {
             const selection = window.getSelection();
             const range = selection.getRangeAt(0);
