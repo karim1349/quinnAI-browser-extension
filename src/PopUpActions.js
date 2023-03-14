@@ -37,11 +37,12 @@ function PopUpActions(props) {
         else {
             const selection = window.getSelection();
             const range = selection.getRangeAt(0);
-            const newNode = document.createTextNode(output);
+            const newNode = document.createElement('div');
+            newNode.innerHTML = output.replace(/\n/g, '<br>');
             range.deleteContents();
             range.insertNode(newNode);
-            range.setStart(newNode, 0);
-            range.setEnd(newNode, output.length);
+            range.setStart(newNode.firstChild, 0);
+            range.setEnd(newNode.lastChild, newNode.lastChild.textContent.length);
         }
         props.setAction(0);
     }

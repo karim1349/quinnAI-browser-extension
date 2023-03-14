@@ -5,7 +5,7 @@ function PopUpLabel() {
     
     return (
         <div className="flex justify-center">
-            <button className="z-10 hover:bg-gray-100 rounded-full" style={{height:35}} onClick={() => setPopUp(true)}>
+            <button className="z-1 hover:bg-gray-100 rounded-full" style={{height:35}} onClick={() => setPopUp(true)}>
                 <svg className="self-center mr-2" width="32" height="15" viewBox="0 0 32 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12.7119 2.36695V5.28869L0 6.25681H16.2714L12.7119 6.83652V8.15053L2.77762 8.90705H19.05L12.7119 9.7399V11.8993L3.40526 12.6075H19.6776L12.7119 13.3457C12.7119 14.0752 13.3029 14.6674 14.0308 14.6674H30.6811C31.409 14.6674 32 14.0752 32 13.3457V2.36695L22.3559 9.06164L12.7119 2.36695ZM32 0.754395H12.7119L22.3559 7.44908L32 0.754395Z" fill="#00ADEF"/>
                 </svg>
