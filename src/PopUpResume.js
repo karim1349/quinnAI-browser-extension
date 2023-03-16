@@ -111,7 +111,7 @@ function PopUpResume({ originalSubAction, email, action, setAction }) {
                                 </button>
 
                                 <div id="dropdown2" className="z-10 hidden bg-white mx-2.5 my-2 rounded-lg shadow w-48 absolute">
-                                    <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="multiLevelDropdownButton2">
+                                    <ul className="myUl py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="multiLevelDropdownButton2">
                                         {action.subActions.map((subAction, index) => {
                                             return(
                                                 <li key={index}>

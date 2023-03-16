@@ -81,7 +81,7 @@ function ComposeTextMenu() {
         <svg className="w-4 h-4 ml-2 rotate-0 transition-transform duration-300 ease-in-out" id="svgInset" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
       </button>
       <div id="dropdownText" className="z-10 hidden bg-white mx-2.5 my-2 h-40 rounded-lg shadow w-56 absolute overflow-y-scroll scrollableDropdown">
-        <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="multiLevelDropdownTextButton">
+        <ul className="myUl py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="multiLevelDropdownTextButton">
           {actions.map((action, index) => {
             if(action.popUpType == 2)
             {
@@ -121,7 +121,7 @@ function ComposeTextMenu() {
             if(action.name == secondDropdown && action.popUpType == 2){
               if(action.subActions != undefined){
                 return (
-                  <ul key={index} className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownTextButton">
+                  <ul key={index} className="myUl py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="doubleDropdownTextButton">
                     {action.subActions.map((subAction, indexBis) => {
                       return (
                         <li key={indexBis}>

@@ -15,6 +15,25 @@ function textToHtml(text) {
   
       var style = document.createElement('style');
       style.innerHTML = `
+      .myUl {
+        list-style-type: none !important;
+        padding-inline-start: 0px !important;
+        margin-block-start: 0px !important;
+        margin-block-end: 0px !important;
+      }
+      .myUl li {
+        list-style-type: none !important;
+      }
+        ol, ul
+         {
+          list-style: auto;
+          padding-inline-start: 40px;
+          margin-block-start: 13px;
+          margin-block-end: 13px;
+        }
+        ul li {
+          list-style-type: disc;
+        }
       .headline {
           flex-direction: row;
           justify-content: center;
